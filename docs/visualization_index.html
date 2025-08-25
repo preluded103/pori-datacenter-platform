@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pori Datacenter Visualization Suite</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .header { background: #1f4e79; color: white; padding: 20px; margin-bottom: 30px; }
+        .viz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
+        .viz-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .viz-card h3 { color: #1f4e79; margin-top: 0; }
+        .viz-card img { width: 100%; height: auto; border: 1px solid #ddd; }
+        .btn { display: inline-block; padding: 8px 16px; margin: 5px; background: #4ecdc4; 
+               color: white; text-decoration: none; border-radius: 4px; }
+        .btn:hover { background: #45b7b8; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>PORI DATACENTER TECHNICAL VISUALIZATION SUITE</h1>
+        <p>Engineering-Grade Analysis | Investment Decision Support | January 2025</p>
+    </div>
+    
+    <div class="viz-grid">
+        <div class="viz-card">
+            <h3>Power Infrastructure Flow Analysis</h3>
+            <img src="power_flow_diagram.png" alt="Power Flow Diagram">
+            <p>Detailed Sankey diagram showing actual power delivery path from identified substations 
+            to 70MW datacenter load, highlighting the 17 MVA infrastructure gap.</p>
+            <a href="power_flow_diagram.html" class="btn">Interactive Version</a>
+            <a href="power_flow_diagram.png" class="btn">High-Res PNG</a>
+        </div>
+        
+        <div class="viz-card">
+            <h3>Timeline Reality Check</h3>
+            <img src="timeline_comparison.png" alt="Timeline Comparison">
+            <p>Comparison of marketing claims (18 months) vs engineering reality (48 months) 
+            with benchmarks from actual Finnish datacenter projects.</p>
+            <a href="timeline_comparison.png" class="btn">High-Res PNG</a>
+        </div>
+        
+        <div class="viz-card">
+            <h3>Multi-Domain Constraint Analysis</h3>
+            <img src="constraint_radar.png" alt="Constraint Radar">
+            <p>Radar chart showing constraint severity across eight critical domains, 
+            from power infrastructure to environmental compliance.</p>
+            <a href="constraint_radar.html" class="btn">Interactive Version</a>
+            <a href="constraint_radar.png" class="btn">High-Res PNG</a>
+        </div>
+    </div>
+    
+    <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 8px;">
+        <h3>Technical Notes</h3>
+        <ul>
+            <li><strong>Data Sources:</strong> OpenStreetMap infrastructure data, Finnish grid standards, 
+                actual municipal project timelines</li>
+            <li><strong>Methodology:</strong> Engineering-grade analysis based on Finnish transmission 
+                standards and comparable project benchmarks</li>
+            <li><strong>Resolution:</strong> All images exported at 300 DPI for presentation quality</li>
+            <li><strong>Interactive:</strong> HTML versions support zoom, hover, and data exploration</li>
+        </ul>
+    </div>
+</body>
+</html>
+        

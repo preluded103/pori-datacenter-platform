@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_67a9ea9af36bd8fae3d5c2b20e5cfd96 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+</head>
+<body>
+    
+    
+        <div style="position: fixed; 
+                    top: 10px; right: 10px; width: 300px; height: auto; 
+                    background-color: white; border:2px solid grey; z-index:9999; 
+                    font-size:12px; padding: 10px">
+        <h4 style="margin-top:0; color: #1f4e79;">PORI DATACENTER CONSTRAINTS</h4>
+        
+        <b>Power Infrastructure:</b><br>
+        <i class="fa fa-circle" style="color:#2e7d32"></i> High Capacity (>100 MVA)<br>
+        <i class="fa fa-circle" style="color:#fbc02d"></i> Medium Capacity (60-100 MVA)<br>
+        <i class="fa fa-circle" style="color:#f44336"></i> Limited Capacity (<60 MVA)<br><br>
+        
+        <b>Acoustic Zones (dB):</b><br>
+        <i class="fa fa-circle" style="color:#ff5722"></i> >70 dB (Non-compliant)<br>
+        <i class="fa fa-circle" style="color:#ff9800"></i> 60-70 dB (Mitigation required)<br>
+        <i class="fa fa-circle" style="color:#4caf50"></i> <55 dB (Compliant)<br><br>
+        
+        <b>Environmental:</b><br>
+        <i class="fa fa-circle" style="color:#1976d2"></i> River cooling access<br>
+        <i class="fa fa-circle" style="color:#4caf50"></i> IBA protected area<br><br>
+        
+        <b>Site Information:</b><br>
+        Phase I: 70 MW, 6.5 hectares<br>
+        Phase II: 100 MW, 9.0 hectares<br>
+        Total: 170 MW, 15 hectares
+        </div>
+        
+    
+            <div class="folium-map" id="map_67a9ea9af36bd8fae3d5c2b20e5cfd96" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_67a9ea9af36bd8fae3d5c2b20e5cfd96 = L.map(
+                "map_67a9ea9af36bd8fae3d5c2b20e5cfd96",
+                {
+                    center: [61.495722, 21.810987],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_3197a298a3be7c9c39582916e8acc2ab = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "OpenStreetMap",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_3197a298a3be7c9c39582916e8acc2ab.addTo(map_67a9ea9af36bd8fae3d5c2b20e5cfd96);
+        
+    
+            var tile_layer_ba551f4a7fed9b1f83fccadfda89f7ca = L.tileLayer(
+                "Stamen Terrain",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Stamen",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_ba551f4a7fed9b1f83fccadfda89f7ca.addTo(map_67a9ea9af36bd8fae3d5c2b20e5cfd96);
+        
+    
+            var tile_layer_31e43079ba2537bc5c3754cb946ff105 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "CartoDB",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_31e43079ba2537bc5c3754cb946ff105.addTo(map_67a9ea9af36bd8fae3d5c2b20e5cfd96);
+        
+    
+            var feature_group_04b8907deb474e52405fb76348508bae = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var polygon_1c887fe900827e8598273dffb0d3985a = L.polygon(
+                [[61.4845, 21.7965], [61.4857, 21.7965], [61.4857, 21.7979], [61.4845, 21.7979], [61.4845, 21.7965]],
+                {"bubblingMouseEvents": true, "color": "#7b1fa2", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#7b1fa2", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_04b8907deb474e52405fb76348508bae);
+        
+    
+        var popup_31eba1ff6e03fc70ee6e5e9b828f62a5 = L.popup({
+  "maxWidth": 200,
+});
+
+        
+            
+                var html_0fcd0fb075ea57712b22ad1c742b5a76 = $(`<div id="html_0fcd0fb075ea57712b22ad1c742b5a76" style="width: 100.0%; height: 100.0%;">                 <b>Phase I</b><br>                 Area: 65,000 m²<br>                 Power: 70 MW<br>                 Power Density: 10.8 MW/hectare<br>                 Height Limit: 25m<br>                 Zoning: Industrial                 </div>`)[0];
+                popup_31eba1ff6e03fc70ee6e5e9b828f62a5.setContent(html_0fcd0fb075ea57712b22ad1c742b5a76);
+            
+        
+
+        polygon_1c887fe900827e8598273dffb0d3985a.bindPopup(popup_31eba1ff6e03fc70ee6e5e9b828f62a5)
+        ;
+
+        
+    
+    
+            polygon_1c887fe900827e8598273dffb0d3985a.bindTooltip(
+                `<div>
+                     Phase I - 70 MW
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var polygon_75a460e4e89e041e17808826171cf0df = L.polygon(
+                [[61.4845, 21.7979], [61.4857, 21.7979], [61.4857, 21.7999], [61.4845, 21.7999], [61.4845, 21.7979]],
+                {"bubblingMouseEvents": true, "color": "#512da8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#512da8", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_04b8907deb474e52405fb76348508bae);
+        
+    
+        var popup_578ecce2ec370b39d470f89c50ebdf78 = L.popup({
+  "maxWidth": 200,
+});
+
+        
+            
+                var html_9b5f17a84a081e0949ffaa8dba9bf034 = $(`<div id="html_9b5f17a84a081e0949ffaa8dba9bf034" style="width: 100.0%; height: 100.0%;">                 <b>Phase II</b><br>                 Area: 90,000 m²<br>                 Power: 100 MW<br>                 Power Density: 11.1 MW/hectare<br>                 Height Limit: 25m<br>                 Zoning: Industrial                 </div>`)[0];
+                popup_578ecce2ec370b39d470f89c50ebdf78.setContent(html_9b5f17a84a081e0949ffaa8dba9bf034);
+            
+        
+
+        polygon_75a460e4e89e041e17808826171cf0df.bindPopup(popup_578ecce2ec370b39d470f89c50ebdf78)
+        ;
+
+        
+    
+    
+            polygon_75a460e4e89e041e17808826171cf0df.bindTooltip(
+                `<div>
+                     Phase II - 100 MW
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_4c242658da3aaebfef8565d82ba57f18 = L.marker(
+                [61.495722, 21.810987],
+                {
+}
+            ).addTo(feature_group_04b8907deb474e52405fb76348508bae);
+        
+    
+            var icon_8793b4242d77ee56e8f184238953e8d9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "purple",
+  "iconColor": "white",
+  "icon": "building",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_873a279785d0375702a239f6613a5c33 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f94795167ed9f757b492e398f58473a2 = $(`<div id="html_f94795167ed9f757b492e398f58473a2" style="width: 100.0%; height: 100.0%;">Datacenter Site Center<br>Konepajanranta, Pori</div>`)[0];
+                popup_873a279785d0375702a239f6613a5c33.setContent(html_f94795167ed9f757b492e398f58473a2);
+            
+        
+
+        marker_4c242658da3aaebfef8565d82ba57f18.bindPopup(popup_873a279785d0375702a239f6613a5c33)
+        ;
+
+        
+    
+    
+            marker_4c242658da3aaebfef8565d82ba57f18.bindTooltip(
+                `<div>
+                     Site Center
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4c242658da3aaebfef8565d82ba57f18.setIcon(icon_8793b4242d77ee56e8f184238953e8d9);
+            
+    
+            feature_group_04b8907deb474e52405fb76348508bae.addTo(map_67a9ea9af36bd8fae3d5c2b20e5cfd96);
+        
+    
+            var feature_group_0433164f616f0ccf154b38592739b568 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_e38b476c77053fc26abc8e2f05f1a4bd = L.circleMarker(
+                [61.4886, 21.8052],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e7d32", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15.0, "stroke": true, "weight": 2}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+        var popup_906f199e2df7338195e669bfb2db7eae = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_7c60ffa6b7d0ea540c70f04ea1664c7c = $(`<div id="html_7c60ffa6b7d0ea540c70f04ea1664c7c" style="width: 100.0%; height: 100.0%;">                 <b>Isosannan Sähköasema</b><br>                 Capacity: 120 MVA<br>                 Distance: 1.03 km<br>                 Status: PRIMARY                 </div>`)[0];
+                popup_906f199e2df7338195e669bfb2db7eae.setContent(html_7c60ffa6b7d0ea540c70f04ea1664c7c);
+            
+        
+
+        circle_marker_e38b476c77053fc26abc8e2f05f1a4bd.bindPopup(popup_906f199e2df7338195e669bfb2db7eae)
+        ;
+
+        
+    
+    
+            circle_marker_e38b476c77053fc26abc8e2f05f1a4bd.bindTooltip(
+                `<div>
+                     Isosannan Sähköasema - 120 MVA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_70de82897e5c9877189cdf342324ef08 = L.polyline(
+                [[61.4886, 21.8052], [61.495722, 21.810987]],
+                {"bubblingMouseEvents": true, "color": "#2e7d32", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "#2e7d32", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var marker_10096dba339abb342d8ee5f1a44a0fb2 = L.marker(
+                [61.492160999999996, 21.8080935],
+                {
+}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var div_icon_e1b894f8f1f676dc5db8bef3379bf777 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"background: white; border: 1px solid black; padding: 2px 4px; \n                         border-radius: 3px; font-size: 10px; font-weight: bold;\"\u003e\n                         1.03km\n                    \u003c/div\u003e",
+  "iconSize": [50, 20],
+  "iconAnchor": [25, 10],
+  "className": "empty",
+});
+        
+    
+                marker_10096dba339abb342d8ee5f1a44a0fb2.setIcon(div_icon_e1b894f8f1f676dc5db8bef3379bf777);
+            
+    
+            var circle_marker_3d2577d40b44a5bb0999b4ba2b5f7215 = L.circleMarker(
+                [61.4922, 21.8105],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fbc02d", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.0, "stroke": true, "weight": 2}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+        var popup_3fc1b131cc593ff58e8628f2c86b18af = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_a5bb7a9af9fc9a69b3459602b89b9e75 = $(`<div id="html_a5bb7a9af9fc9a69b3459602b89b9e75" style="width: 100.0%; height: 100.0%;">                 <b>Herralahden Substation</b><br>                 Capacity: 80 MVA<br>                 Distance: 1.29 km<br>                 Status: PRIMARY                 </div>`)[0];
+                popup_3fc1b131cc593ff58e8628f2c86b18af.setContent(html_a5bb7a9af9fc9a69b3459602b89b9e75);
+            
+        
+
+        circle_marker_3d2577d40b44a5bb0999b4ba2b5f7215.bindPopup(popup_3fc1b131cc593ff58e8628f2c86b18af)
+        ;
+
+        
+    
+    
+            circle_marker_3d2577d40b44a5bb0999b4ba2b5f7215.bindTooltip(
+                `<div>
+                     Herralahden Substation - 80 MVA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_d0df34ba2a3556c862107b10abefcb3c = L.polyline(
+                [[61.4922, 21.8105], [61.495722, 21.810987]],
+                {"bubblingMouseEvents": true, "color": "#fbc02d", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "#fbc02d", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var marker_d5d275ca6319b6994d83523cd1c2979e = L.marker(
+                [61.493961, 21.8107435],
+                {
+}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var div_icon_94df3e8bd9654d7c04f175296280eaeb = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"background: white; border: 1px solid black; padding: 2px 4px; \n                         border-radius: 3px; font-size: 10px; font-weight: bold;\"\u003e\n                         1.29km\n                    \u003c/div\u003e",
+  "iconSize": [50, 20],
+  "iconAnchor": [25, 10],
+  "className": "empty",
+});
+        
+    
+                marker_d5d275ca6319b6994d83523cd1c2979e.setIcon(div_icon_94df3e8bd9654d7c04f175296280eaeb);
+            
+    
+            var circle_marker_f4c61c846d80591cb82c53989256e641 = L.circleMarker(
+                [61.4654, 21.8284],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fbc02d", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+        var popup_fbed7d0cf323c4cdd2ccf33efea0b931 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_91865752a404cb5001cf55699f2df07b = $(`<div id="html_91865752a404cb5001cf55699f2df07b" style="width: 100.0%; height: 100.0%;">                 <b>Impolan Substation</b><br>                 Capacity: 60 MVA<br>                 Distance: 3.43 km<br>                 Status: ALTERNATIVE                 </div>`)[0];
+                popup_fbed7d0cf323c4cdd2ccf33efea0b931.setContent(html_91865752a404cb5001cf55699f2df07b);
+            
+        
+
+        circle_marker_f4c61c846d80591cb82c53989256e641.bindPopup(popup_fbed7d0cf323c4cdd2ccf33efea0b931)
+        ;
+
+        
+    
+    
+            circle_marker_f4c61c846d80591cb82c53989256e641.bindTooltip(
+                `<div>
+                     Impolan Substation - 60 MVA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_9088e4e1a5a39557e562d7fab6296516 = L.polyline(
+                [[61.4654, 21.8284], [61.495722, 21.810987]],
+                {"bubblingMouseEvents": true, "color": "#fbc02d", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "#fbc02d", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var marker_1f10ff8c730c0b358d77a34aaa32e8db = L.marker(
+                [61.480561, 21.8196935],
+                {
+}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var div_icon_baa1d55bfe0c72d4011bf3015d4ae8fe = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"background: white; border: 1px solid black; padding: 2px 4px; \n                         border-radius: 3px; font-size: 10px; font-weight: bold;\"\u003e\n                         3.43km\n                    \u003c/div\u003e",
+  "iconSize": [50, 20],
+  "iconAnchor": [25, 10],
+  "className": "empty",
+});
+        
+    
+                marker_1f10ff8c730c0b358d77a34aaa32e8db.setIcon(div_icon_baa1d55bfe0c72d4011bf3015d4ae8fe);
+            
+    
+            var circle_marker_82d640919a045bdac6376fbb64fa3797 = L.circleMarker(
+                [61.4523, 21.8401],
+                {"bubblingMouseEvents": true, "color": "black", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f44336", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+        var popup_9f6da3e221660fc62992681447323d47 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_7c6867f6af370fd137e79ac5b0e88340 = $(`<div id="html_7c6867f6af370fd137e79ac5b0e88340" style="width: 100.0%; height: 100.0%;">                 <b>Hyvelän Substation</b><br>                 Capacity: 40 MVA<br>                 Distance: 4.17 km<br>                 Status: ALTERNATIVE                 </div>`)[0];
+                popup_9f6da3e221660fc62992681447323d47.setContent(html_7c6867f6af370fd137e79ac5b0e88340);
+            
+        
+
+        circle_marker_82d640919a045bdac6376fbb64fa3797.bindPopup(popup_9f6da3e221660fc62992681447323d47)
+        ;
+
+        
+    
+    
+            circle_marker_82d640919a045bdac6376fbb64fa3797.bindTooltip(
+                `<div>
+                     Hyvelän Substation - 40 MVA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_a757c361c05cff3003a9ab79dfcfc539 = L.polyline(
+                [[61.4523, 21.8401], [61.495722, 21.810987]],
+                {"bubblingMouseEvents": true, "color": "#f44336", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "#f44336", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var marker_d83ee0d7426a005832bfb5f40c2b1c43 = L.marker(
+                [61.474011000000004, 21.825543500000002],
+                {
+}
+            ).addTo(feature_group_0433164f616f0ccf154b38592739b568);
+        
+    
+            var div_icon_b23743a4d41af19ec546f19b1027d870 = L.divIcon({
+  "html": "\n                    \u003cdiv style=\"background: white; border: 1px solid black; padding: 2px 4px; \n                         border-radius: 3px; font-size: 10px; font-weight: bold;\"\u003e\n                         4.17km\n                    \u003c/div\u003e",
+  "iconSize": [50, 20],
+  "iconAnchor": [25, 10],
+  "className": "empty",
+});
+        
+    
+                marker_d83ee0d7426a005832bfb5f40c2b1c43.setIcon(div_icon_b23743a4d41af19ec546f19b1027d870);
+            
+    
+            feature_group_0433164f616f0ccf154b38592739b568.addTo(map_67a9ea9af36bd8fae3d5c2b20e5cfd96);
+        
+    
+            var feature_group_f0b6f8fa0dab9e53c621469ba7d4645b = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_7019e88a1a4068c6932dadf7e24a1fdc = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#ff5722", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff5722", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 100, "stroke": true, "weight": 2}
+            ).addTo(feature_group_f0b6f8fa0dab9e53c621469ba7d4645b);
+        
+    
+        var popup_55a146696371a0d9651166e0423435dd = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_dd35a9e86edeadf6a9fe437f76885b87 = $(`<div id="html_dd35a9e86edeadf6a9fe437f76885b87" style="width: 100.0%; height: 100.0%;"><b>Acoustic Zone</b><br>70+ dB (Non-compliant)<br>Residential noise limits exceeded</div>`)[0];
+                popup_55a146696371a0d9651166e0423435dd.setContent(html_dd35a9e86edeadf6a9fe437f76885b87);
+            
+        
+
+        circle_7019e88a1a4068c6932dadf7e24a1fdc.bindPopup(popup_55a146696371a0d9651166e0423435dd)
+        ;
+
+        
+    
+    
+            circle_7019e88a1a4068c6932dadf7e24a1fdc.bindTooltip(
+                `<div>
+                     Acoustic: 70+ dB (Non-compliant)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_d92389edd41933bf3f7fe47abc7b410c = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#ff9800", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff9800", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 200, "stroke": true, "weight": 2}
+            ).addTo(feature_group_f0b6f8fa0dab9e53c621469ba7d4645b);
+        
+    
+        var popup_c2b24dbf210c3610ea6bf47fa983a646 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f50f13e205b4fb2492dbf03458041808 = $(`<div id="html_f50f13e205b4fb2492dbf03458041808" style="width: 100.0%; height: 100.0%;"><b>Acoustic Zone</b><br>60-70 dB (Marginal)<br>Acoustic mitigation required</div>`)[0];
+                popup_c2b24dbf210c3610ea6bf47fa983a646.setContent(html_f50f13e205b4fb2492dbf03458041808);
+            
+        
+
+        circle_d92389edd41933bf3f7fe47abc7b410c.bindPopup(popup_c2b24dbf210c3610ea6bf47fa983a646)
+        ;
+
+        
+    
+    
+            circle_d92389edd41933bf3f7fe47abc7b410c.bindTooltip(
+                `<div>
+                     Acoustic: 60-70 dB (Marginal)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_78df6700dfbc10033c80dccc0a5f2c88 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#ffc107", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffc107", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 400, "stroke": true, "weight": 2}
+            ).addTo(feature_group_f0b6f8fa0dab9e53c621469ba7d4645b);
+        
+    
+        var popup_acd427d7ccd27bf3ae51470b4c2b2e39 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f92962a21e4f7e69639542752b2287c3 = $(`<div id="html_f92962a21e4f7e69639542752b2287c3" style="width: 100.0%; height: 100.0%;"><b>Acoustic Zone</b><br>55-60 dB (Compliant)<br>Meets daytime limits</div>`)[0];
+                popup_acd427d7ccd27bf3ae51470b4c2b2e39.setContent(html_f92962a21e4f7e69639542752b2287c3);
+            
+        
+
+        circle_78df6700dfbc10033c80dccc0a5f2c88.bindPopup(popup_acd427d7ccd27bf3ae51470b4c2b2e39)
+        ;
+
+        
+    
+    
+            circle_78df6700dfbc10033c80dccc0a5f2c88.bindTooltip(
+                `<div>
+                     Acoustic: 55-60 dB (Compliant)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_5568652d50d4b0991daa5144abdc6cb5 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#4caf50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4caf50", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 800, "stroke": true, "weight": 2}
+            ).addTo(feature_group_f0b6f8fa0dab9e53c621469ba7d4645b);
+        
+    
+        var popup_3f722bafbc1cc3783e81336bda9fc0af = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b92082a3b9747d54e27ca6ddeaefbfd2 = $(`<div id="html_b92082a3b9747d54e27ca6ddeaefbfd2" style="width: 100.0%; height: 100.0%;"><b>Acoustic Zone</b><br><55 dB (Compliant)<br>Meets all noise limits</div>`)[0];
+                popup_3f722bafbc1cc3783e81336bda9fc0af.setContent(html_b92082a3b9747d54e27ca6ddeaefbfd2);
+            
+        
+
+        circle_5568652d50d4b0991daa5144abdc6cb5.bindPopup(popup_3f722bafbc1cc3783e81336bda9fc0af)
+        ;
+
+        
+    
+    
+            circle_5568652d50d4b0991daa5144abdc6cb5.bindTooltip(
+                `<div>
+                     Acoustic: <55 dB (Compliant)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_9fa6348e580ae91507fa852c14208f3d = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#2e7d32", "dashArray": "10, 10", "dashOffset": null, "fill": true, "fillColor": "#2e7d32", "fillOpacity": 0.05, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 1}
+            ).addTo(feature_group_f0b6f8fa0dab9e53c621469ba7d4645b);
+        
+    
+        var popup_bf72ac6a40defccad034c4f180931964 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ccc8278cff534954f1db7353409fe29a = $(`<div id="html_ccc8278cff534954f1db7353409fe29a" style="width: 100.0%; height: 100.0%;"><b>Power Access Zone</b><br>Optimal Power Access<br>2+ substations within range</div>`)[0];
+                popup_bf72ac6a40defccad034c4f180931964.setContent(html_ccc8278cff534954f1db7353409fe29a);
+            
+        
+
+        circle_9fa6348e580ae91507fa852c14208f3d.bindPopup(popup_bf72ac6a40defccad034c4f180931964)
+        ;
+
+        
+    
+    
+            circle_9fa6348e580ae91507fa852c14208f3d.bindTooltip(
+                `<div>
+                     Power: Optimal Power Access
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_6e695d12affdbf21f98e2ada13cce91c = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#fbc02d", "dashArray": "10, 10", "dashOffset": null, "fill": true, "fillColor": "#fbc02d", "fillOpacity": 0.05, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 3000, "stroke": true, "weight": 1}
+            ).addTo(feature_group_f0b6f8fa0dab9e53c621469ba7d4645b);
+        
+    
+        var popup_09e9b4ab9ddf8ee587036fac332a3c4a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_be2eedc1a6fbaf9000e69e1908c12e18 = $(`<div id="html_be2eedc1a6fbaf9000e69e1908c12e18" style="width: 100.0%; height: 100.0%;"><b>Power Access Zone</b><br>Moderate Power Access<br>Limited substation options</div>`)[0];
+                popup_09e9b4ab9ddf8ee587036fac332a3c4a.setContent(html_be2eedc1a6fbaf9000e69e1908c12e18);
+            
+        
+
+        circle_6e695d12affdbf21f98e2ada13cce91c.bindPopup(popup_09e9b4ab9ddf8ee587036fac332a3c4a)
+        ;
+
+        
+    
+    
+            circle_6e695d12affdbf21f98e2ada13cce91c.bindTooltip(
+                `<div>
+                     Power: Moderate Power Access
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_2035b5d1596ec9c3369e07bccbaa456e = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#f44336", "dashArray": "10, 10", "dashOffset": null, "fill": true, "fillColor": "#f44336", "fillOpacity": 0.05, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5000, "stroke": true, "weight": 1}
+            ).addTo(feature_group_f0b6f8fa0dab9e53c621469ba7d4645b);
+        
+    
+        var popup_3e7d46d410e4a41ecf59d3e6d881d098 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b059767152b3154a6b9f1ff3119de36f = $(`<div id="html_b059767152b3154a6b9f1ff3119de36f" style="width: 100.0%; height: 100.0%;"><b>Power Access Zone</b><br>Poor Power Access<br>Significant infrastructure required</div>`)[0];
+                popup_3e7d46d410e4a41ecf59d3e6d881d098.setContent(html_b059767152b3154a6b9f1ff3119de36f);
+            
+        
+
+        circle_2035b5d1596ec9c3369e07bccbaa456e.bindPopup(popup_3e7d46d410e4a41ecf59d3e6d881d098)
+        ;
+
+        
+    
+    
+            circle_2035b5d1596ec9c3369e07bccbaa456e.bindTooltip(
+                `<div>
+                     Power: Poor Power Access
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var feature_group_1c7d2e2c9e0c8b3e767e67c059345b14 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_dd57545b3217b8fa10181c80743caaa0 = L.polyline(
+                [[61.492, 21.78], [61.489, 21.785], [61.486, 21.79], [61.483, 21.795], [61.48, 21.8], [61.477, 21.805]],
+                {"bubblingMouseEvents": true, "color": "#1976d2", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1976d2", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 8}
+            ).addTo(feature_group_1c7d2e2c9e0c8b3e767e67c059345b14);
+        
+    
+        var popup_8e7a20e50181e4748502857bb1f0ed63 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7a3a128f7c0a91a4d7e1e8c9a984be57 = $(`<div id="html_7a3a128f7c0a91a4d7e1e8c9a984be57" style="width: 100.0%; height: 100.0%;"><b>Kokemäenjoki River</b><br>Cooling water source<br>IBA Protected Area</div>`)[0];
+                popup_8e7a20e50181e4748502857bb1f0ed63.setContent(html_7a3a128f7c0a91a4d7e1e8c9a984be57);
+            
+        
+
+        poly_line_dd57545b3217b8fa10181c80743caaa0.bindPopup(popup_8e7a20e50181e4748502857bb1f0ed63)
+        ;
+
+        
+    
+    
+            poly_line_dd57545b3217b8fa10181c80743caaa0.bindTooltip(
+                `<div>
+                     Kokemäenjoki River
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var polygon_54dcc4d29d8872fe6e320919748a6d0c = L.polygon(
+                [[61.4938018018018, 21.78], [61.49356040613294, 21.781887567344086], [61.4929009009009, 21.783269362542665], [61.492, 21.78377513468817], [61.491099099099095, 21.783269362542665], [61.49043959386705, 21.781887567344086], [61.49019819819819, 21.78], [61.49043959386705, 21.778112432655917], [61.491099099099095, 21.776730637457337], [61.492, 21.776224865311832], [61.4929009009009, 21.776730637457337], [61.49356040613294, 21.778112432655917], [61.4908018018018, 21.785], [61.49056040613294, 21.786887385397442], [61.4899009009009, 21.788269047401833], [61.489, 21.788774770794884], [61.488099099099095, 21.788269047401833], [61.48743959386705, 21.786887385397442], [61.48719819819819, 21.785], [61.48743959386705, 21.783112614602558], [61.488099099099095, 21.781730952598167], [61.489, 21.781225229205116], [61.4899009009009, 21.781730952598167], [61.49056040613294, 21.783112614602558], [61.4878018018018, 21.79], [61.48756040613294, 21.791887203491047], [61.4869009009009, 21.793268732330713], [61.486, 21.79377440698209], [61.485099099099095, 21.793268732330713], [61.48443959386705, 21.791887203491047], [61.48419819819819, 21.79], [61.48443959386705, 21.78811279650895], [61.485099099099095, 21.786731267669285], [61.486, 21.786225593017907], [61.4869009009009, 21.786731267669285], [61.48756040613294, 21.78811279650895], [61.4848018018018, 21.795], [61.48456040613294, 21.796887021624887], [61.4839009009009, 21.798268417329282], [61.483, 21.798774043249768], [61.482099099099095, 21.798268417329282], [61.48143959386705, 21.796887021624887], [61.48119819819819, 21.795], [61.48143959386705, 21.793112978375117], [61.482099099099095, 21.79173158267072], [61.483, 21.791225956750235], [61.4839009009009, 21.79173158267072], [61.48456040613294, 21.793112978375117], [61.4818018018018, 21.8], [61.48156040613294, 21.801886839798943], [61.4809009009009, 21.80326810239751], [61.48, 21.803773679597885], [61.479099099099095, 21.80326810239751], [61.47843959386705, 21.801886839798943], [61.47819819819819, 21.8], [61.47843959386705, 21.79811316020106], [61.479099099099095, 21.79673189760249], [61.48, 21.796226320402116], [61.4809009009009, 21.79673189760249], [61.48156040613294, 21.79811316020106], [61.4788018018018, 21.805], [61.47856040613294, 21.80688665801321], [61.4779009009009, 21.808267787535385], [61.477, 21.808773316026418], [61.476099099099095, 21.808267787535385], [61.47543959386705, 21.80688665801321], [61.47519819819819, 21.805], [61.47543959386705, 21.80311334198679], [61.476099099099095, 21.801732212464614], [61.477, 21.80122668397358], [61.4779009009009, 21.801732212464614], [61.47856040613294, 21.80311334198679]],
+                {"bubblingMouseEvents": true, "color": "#1976d2", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e3f2fd", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 1}
+            ).addTo(feature_group_1c7d2e2c9e0c8b3e767e67c059345b14);
+        
+    
+        var popup_9bb0a4088cd818d96db7b3e1387dc001 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6ea9bed014c79b183edb9ae5159378bc = $(`<div id="html_6ea9bed014c79b183edb9ae5159378bc" style="width: 100.0%; height: 100.0%;"><b>River Buffer Zone</b><br>Direct Impact Zone<br>30°C discharge limit</div>`)[0];
+                popup_9bb0a4088cd818d96db7b3e1387dc001.setContent(html_6ea9bed014c79b183edb9ae5159378bc);
+            
+        
+
+        polygon_54dcc4d29d8872fe6e320919748a6d0c.bindPopup(popup_9bb0a4088cd818d96db7b3e1387dc001)
+        ;
+
+        
+    
+    
+            polygon_54dcc4d29d8872fe6e320919748a6d0c.bindTooltip(
+                `<div>
+                     River Buffer: 200m
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var polygon_8cb11350a3f8ede9afe8ee04c35e02c2 = L.polygon(
+                [[61.4965045045045, 21.78], [61.49590101533236, 21.784718918360216], [61.49425225225225, 21.788173406356663], [61.492, 21.789437836720428], [61.48974774774774, 21.788173406356663], [61.48809898466764, 21.784718918360216], [61.487495495495494, 21.78], [61.48809898466764, 21.775281081639786], [61.48974774774774, 21.77182659364334], [61.492, 21.770562163279575], [61.49425225225225, 21.77182659364334], [61.49590101533236, 21.775281081639786], [61.4935045045045, 21.785], [61.49290101533236, 21.789718463493607], [61.49125225225225, 21.793172618504585], [61.489, 21.794436926987213], [61.48674774774774, 21.793172618504585], [61.48509898466764, 21.789718463493607], [61.484495495495494, 21.785], [61.48509898466764, 21.780281536506394], [61.48674774774774, 21.776827381495416], [61.489, 21.775563073012787], [61.49125225225225, 21.776827381495416], [61.49290101533236, 21.780281536506394], [61.4905045045045, 21.79], [61.48990101533236, 21.794718008727614], [61.48825225225225, 21.79817183082678], [61.486, 21.799436017455232], [61.48374774774774, 21.79817183082678], [61.48209898466764, 21.794718008727614], [61.481495495495494, 21.79], [61.48209898466764, 21.785281991272385], [61.48374774774774, 21.781828169173217], [61.486, 21.780563982544766], [61.48825225225225, 21.781828169173217], [61.48990101533236, 21.785281991272385], [61.4875045045045, 21.795], [61.48690101533236, 21.799717554062212], [61.48525225225225, 21.8031710433232], [61.483, 21.80443510812442], [61.48074774774774, 21.8031710433232], [61.47909898466764, 21.799717554062212], [61.478495495495494, 21.795], [61.47909898466764, 21.79028244593779], [61.48074774774774, 21.786828956676803], [61.483, 21.785564891875584], [61.48525225225225, 21.786828956676803], [61.48690101533236, 21.79028244593779], [61.4845045045045, 21.8], [61.48390101533236, 21.804717099497356], [61.48225225225225, 21.80817025599378], [61.48, 21.809434198994712], [61.47774774774774, 21.80817025599378], [61.47609898466764, 21.804717099497356], [61.475495495495494, 21.8], [61.47609898466764, 21.795282900502645], [61.47774774774774, 21.791829744006222], [61.48, 21.79056580100529], [61.48225225225225, 21.791829744006222], [61.48390101533236, 21.795282900502645], [61.4815045045045, 21.805], [61.48090101533236, 21.809716645033024], [61.47925225225225, 21.813169468838463], [61.477, 21.814433290066045], [61.47474774774774, 21.813169468838463], [61.47309898466764, 21.809716645033024], [61.472495495495494, 21.805], [61.47309898466764, 21.800283354966975], [61.47474774774774, 21.796830531161536], [61.477, 21.795566709933954], [61.47925225225225, 21.796830531161536], [61.48090101533236, 21.800283354966975]],
+                {"bubblingMouseEvents": true, "color": "#1976d2", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#bbdefb", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 1}
+            ).addTo(feature_group_1c7d2e2c9e0c8b3e767e67c059345b14);
+        
+    
+        var popup_2270b0c37a1e8fef1a3928b6dd1ffe66 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c2ac2e6ed7c887e1e5b9e556f6392a5c = $(`<div id="html_c2ac2e6ed7c887e1e5b9e556f6392a5c" style="width: 100.0%; height: 100.0%;"><b>River Buffer Zone</b><br>Mixing Zone Boundary<br>Temperature compliance monitoring</div>`)[0];
+                popup_2270b0c37a1e8fef1a3928b6dd1ffe66.setContent(html_c2ac2e6ed7c887e1e5b9e556f6392a5c);
+            
+        
+
+        polygon_8cb11350a3f8ede9afe8ee04c35e02c2.bindPopup(popup_2270b0c37a1e8fef1a3928b6dd1ffe66)
+        ;
+
+        
+    
+    
+            polygon_8cb11350a3f8ede9afe8ee04c35e02c2.bindTooltip(
+                `<div>
+                     River Buffer: 500m
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var polygon_b812fb885234e6757e9fa6ee794cda16 = L.polygon(
+                [[61.501009009009, 21.78], [61.499802030664725, 21.789437836720428], [61.4965045045045, 21.79634681271332], [61.492, 21.798875673440854], [61.487495495495494, 21.79634681271332], [61.48419796933527, 21.789437836720428], [61.48299099099099, 21.78], [61.48419796933527, 21.770562163279575], [61.487495495495494, 21.763653187286682], [61.492, 21.76112432655915], [61.4965045045045, 21.763653187286682], [61.499802030664725, 21.770562163279575], [61.498009009009, 21.785], [61.496802030664725, 21.794436926987213], [61.4935045045045, 21.801345237009173], [61.489, 21.803873853974427], [61.484495495495494, 21.801345237009173], [61.48119796933527, 21.794436926987213], [61.47999099099099, 21.785], [61.48119796933527, 21.775563073012787], [61.484495495495494, 21.768654762990828], [61.489, 21.766126146025574], [61.4935045045045, 21.768654762990828], [61.496802030664725, 21.775563073012787], [61.495009009009, 21.79], [61.493802030664725, 21.799436017455232], [61.4905045045045, 21.806343661653568], [61.486, 21.80887203491046], [61.481495495495494, 21.806343661653568], [61.47819796933527, 21.799436017455232], [61.47699099099099, 21.79], [61.47819796933527, 21.780563982544766], [61.481495495495494, 21.77365633834643], [61.486, 21.771127965089537], [61.4905045045045, 21.77365633834643], [61.493802030664725, 21.780563982544766], [61.492009009009, 21.795], [61.490802030664724, 21.80443510812442], [61.4875045045045, 21.811342086646402], [61.483, 21.813870216248837], [61.478495495495494, 21.811342086646402], [61.47519796933527, 21.80443510812442], [61.47399099099099, 21.795], [61.47519796933527, 21.785564891875584], [61.478495495495494, 21.7786579133536], [61.483, 21.776129783751166], [61.4875045045045, 21.7786579133536], [61.490802030664724, 21.785564891875584], [61.489009009009, 21.8], [61.487802030664724, 21.809434198994712], [61.4845045045045, 21.816340511987555], [61.48, 21.818868397989423], [61.475495495495494, 21.816340511987555], [61.47219796933527, 21.809434198994712], [61.47099099099099, 21.8], [61.47219796933527, 21.79056580100529], [61.475495495495494, 21.783659488012447], [61.48, 21.78113160201058], [61.4845045045045, 21.783659488012447], [61.487802030664724, 21.79056580100529], [61.486009009009, 21.805], [61.484802030664724, 21.814433290066045], [61.4815045045045, 21.821338937676927], [61.477, 21.823866580132094], [61.472495495495494, 21.821338937676927], [61.46919796933527, 21.814433290066045], [61.46799099099099, 21.805], [61.46919796933527, 21.79556670993395], [61.472495495495494, 21.788661062323072], [61.477, 21.786133419867905], [61.4815045045045, 21.788661062323072], [61.484802030664724, 21.79556670993395]],
+                {"bubblingMouseEvents": true, "color": "#1976d2", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#90caf9", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 1}
+            ).addTo(feature_group_1c7d2e2c9e0c8b3e767e67c059345b14);
+        
+    
+        var popup_6fe869f4f024416c86ae11a35fd27e17 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_abf439bf4323744c3824f49fc1f5a0dd = $(`<div id="html_abf439bf4323744c3824f49fc1f5a0dd" style="width: 100.0%; height: 100.0%;"><b>River Buffer Zone</b><br>Environmental Assessment Zone<br>EIA required for impacts</div>`)[0];
+                popup_6fe869f4f024416c86ae11a35fd27e17.setContent(html_abf439bf4323744c3824f49fc1f5a0dd);
+            
+        
+
+        polygon_b812fb885234e6757e9fa6ee794cda16.bindPopup(popup_6fe869f4f024416c86ae11a35fd27e17)
+        ;
+
+        
+    
+    
+            polygon_b812fb885234e6757e9fa6ee794cda16.bindTooltip(
+                `<div>
+                     River Buffer: 1000m
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var polygon_476723cd52154dad0f0ca0d367f41965 = L.polygon(
+                [[61.5, 21.75], [61.5, 21.85], [61.45, 21.85], [61.45, 21.75]],
+                {"bubblingMouseEvents": true, "color": "#4caf50", "dashArray": "15, 15", "dashOffset": null, "fill": true, "fillColor": "#4caf50", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(feature_group_1c7d2e2c9e0c8b3e767e67c059345b14);
+        
+    
+        var popup_321532bab12fe06baf24395fbbe450fb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f32dc2226fac5b515655e9c8d1c35a8d = $(`<div id="html_f32dc2226fac5b515655e9c8d1c35a8d" style="width: 100.0%; height: 100.0%;"><b>IBA Protected Area</b><br>Internationally Important Bird Area<br>EIA mandatory for >50MW projects</div>`)[0];
+                popup_321532bab12fe06baf24395fbbe450fb.setContent(html_f32dc2226fac5b515655e9c8d1c35a8d);
+            
+        
+
+        polygon_476723cd52154dad0f0ca0d367f41965.bindPopup(popup_321532bab12fe06baf24395fbbe450fb)
+        ;
+
+        
+    
+    
+            polygon_476723cd52154dad0f0ca0d367f41965.bindTooltip(
+                `<div>
+                     IBA Protected Area
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var feature_group_ab4d38a6bd148d10a7312e9afa73f87c = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_cd68637d8fc2098a6455c5993019d9af = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#4caf50", "dashArray": "5, 10", "dashOffset": null, "fill": true, "fillColor": "#4caf50", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ab4d38a6bd148d10a7312e9afa73f87c);
+        
+    
+        var popup_d8004ab23303a56c4b0bde80a7273e92 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c40e84d9d4bd23ac128845e003fe111a = $(`<div id="html_c40e84d9d4bd23ac128845e003fe111a" style="width: 100.0%; height: 100.0%;"><b>Infrastructure Cost Zone</b><br>Estimated: €2-5M<br>Minimal infrastructure</div>`)[0];
+                popup_d8004ab23303a56c4b0bde80a7273e92.setContent(html_c40e84d9d4bd23ac128845e003fe111a);
+            
+        
+
+        circle_cd68637d8fc2098a6455c5993019d9af.bindPopup(popup_d8004ab23303a56c4b0bde80a7273e92)
+        ;
+
+        
+    
+    
+            circle_cd68637d8fc2098a6455c5993019d9af.bindTooltip(
+                `<div>
+                     Cost Zone: €2-5M
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_7d45f975d98e089ac5063ad90296325d = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#ffc107", "dashArray": "5, 10", "dashOffset": null, "fill": true, "fillColor": "#ffc107", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ab4d38a6bd148d10a7312e9afa73f87c);
+        
+    
+        var popup_a556b87882501a81803a1d05df2d34fb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_05c217b63849b00fa102b51894a12c0f = $(`<div id="html_05c217b63849b00fa102b51894a12c0f" style="width: 100.0%; height: 100.0%;"><b>Infrastructure Cost Zone</b><br>Estimated: €8-15M<br>Standard connection costs</div>`)[0];
+                popup_a556b87882501a81803a1d05df2d34fb.setContent(html_05c217b63849b00fa102b51894a12c0f);
+            
+        
+
+        circle_7d45f975d98e089ac5063ad90296325d.bindPopup(popup_a556b87882501a81803a1d05df2d34fb)
+        ;
+
+        
+    
+    
+            circle_7d45f975d98e089ac5063ad90296325d.bindTooltip(
+                `<div>
+                     Cost Zone: €8-15M
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_d2f490711ba597cca1d998f591068966 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#ff9800", "dashArray": "5, 10", "dashOffset": null, "fill": true, "fillColor": "#ff9800", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 3000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ab4d38a6bd148d10a7312e9afa73f87c);
+        
+    
+        var popup_2906de51ac1a5c1576ca0a48c153459b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1e76853bbb449ae23c670f7baed10866 = $(`<div id="html_1e76853bbb449ae23c670f7baed10866" style="width: 100.0%; height: 100.0%;"><b>Infrastructure Cost Zone</b><br>Estimated: €15-25M<br>Moderate infrastructure investment</div>`)[0];
+                popup_2906de51ac1a5c1576ca0a48c153459b.setContent(html_1e76853bbb449ae23c670f7baed10866);
+            
+        
+
+        circle_d2f490711ba597cca1d998f591068966.bindPopup(popup_2906de51ac1a5c1576ca0a48c153459b)
+        ;
+
+        
+    
+    
+            circle_d2f490711ba597cca1d998f591068966.bindTooltip(
+                `<div>
+                     Cost Zone: €15-25M
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_8eb64f4cec3fb1b5457fe4a52d792e62 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#f44336", "dashArray": "5, 10", "dashOffset": null, "fill": true, "fillColor": "#f44336", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5000, "stroke": true, "weight": 2}
+            ).addTo(feature_group_ab4d38a6bd148d10a7312e9afa73f87c);
+        
+    
+        var popup_e816e83047b11161d93952c46832bc38 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c9a436ba29a4a959f9d9c20223936d9f = $(`<div id="html_c9a436ba29a4a959f9d9c20223936d9f" style="width: 100.0%; height: 100.0%;"><b>Infrastructure Cost Zone</b><br>Estimated: €25M+<br>Major infrastructure required</div>`)[0];
+                popup_e816e83047b11161d93952c46832bc38.setContent(html_c9a436ba29a4a959f9d9c20223936d9f);
+            
+        
+
+        circle_8eb64f4cec3fb1b5457fe4a52d792e62.bindPopup(popup_e816e83047b11161d93952c46832bc38)
+        ;
+
+        
+    
+    
+            circle_8eb64f4cec3fb1b5457fe4a52d792e62.bindTooltip(
+                `<div>
+                     Cost Zone: €25M+
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var layer_control_85d84c03178de0300a642961d3adc103_layers = {
+                base_layers : {
+                    "OpenStreetMap" : tile_layer_3197a298a3be7c9c39582916e8acc2ab,
+                    "Terrain" : tile_layer_ba551f4a7fed9b1f83fccadfda89f7ca,
+                    "Light Map" : tile_layer_31e43079ba2537bc5c3754cb946ff105,
+                },
+                overlays :  {
+                    "Site Boundaries" : feature_group_04b8907deb474e52405fb76348508bae,
+                    "Power Infrastructure" : feature_group_0433164f616f0ccf154b38592739b568,
+                    "Technical Constraints" : feature_group_f0b6f8fa0dab9e53c621469ba7d4645b,
+                    "Environmental Constraints" : feature_group_1c7d2e2c9e0c8b3e767e67c059345b14,
+                    "Infrastructure Costs" : feature_group_ab4d38a6bd148d10a7312e9afa73f87c,
+                },
+            };
+            let layer_control_85d84c03178de0300a642961d3adc103 = L.control.layers(
+                layer_control_85d84c03178de0300a642961d3adc103_layers.base_layers,
+                layer_control_85d84c03178de0300a642961d3adc103_layers.overlays,
+                {
+  "position": "topleft",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_67a9ea9af36bd8fae3d5c2b20e5cfd96);
+
+        
+    
+            var measure_control_7a965f36d6f1705bfc43d2559db5b5b3 = new L.Control.Measure(
+                {
+  "position": "topright",
+  "primaryLengthUnit": "meters",
+  "secondaryLengthUnit": "kilometers",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "acres",
+});
+            map_67a9ea9af36bd8fae3d5c2b20e5cfd96.addControl(measure_control_7a965f36d6f1705bfc43d2559db5b5b3);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_67a9ea9af36bd8fae3d5c2b20e5cfd96);
+        
+</script>
+</html>

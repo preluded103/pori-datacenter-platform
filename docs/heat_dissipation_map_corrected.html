@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_3218cf8dee1dc3377e5cf19fdc13a067 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+</head>
+<body>
+    
+    
+        <div style="position: fixed; 
+                    top: 10px; right: 10px; width: 250px; height: auto; 
+                    background-color: white; border:2px solid grey; z-index:9999; 
+                    font-size:11px; padding: 10px">
+        <h4 style="margin-top:0; color: #d32f2f;">HEAT DISSIPATION ANALYSIS</h4>
+        <b>Heat Generation Zones:</b><br>
+        <i class="fa fa-circle" style="color:#d32f2f"></i> 95-105 MW (0-50m)<br>
+        <i class="fa fa-circle" style="color:#f57c00"></i> 80-95 MW (50-100m)<br>
+        <i class="fa fa-circle" style="color:#fbc02d"></i> 60-80 MW (100-200m)<br>
+        <i class="fa fa-circle" style="color:#4caf50"></i> <60 MW (200m+)<br><br>
+        
+        <b>Infrastructure:</b><br>
+        <i class="fa fa-building" style="color:red"></i> Datacenter Site<br>
+        <i class="fa fa-tint" style="color:#1976d2"></i> River cooling source<br>
+        <i class="fa fa-fire" style="color:#ff5722"></i> District heating connection<br><br>
+        
+        <b>Site Details:</b><br>
+        Phase I: 70 MW thermal<br>
+        Cooling: 91-105 MW total<br>
+        Location: CORRECTED coordinates
+        </div>
+        
+    
+            <div class="folium-map" id="map_3218cf8dee1dc3377e5cf19fdc13a067" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_3218cf8dee1dc3377e5cf19fdc13a067 = L.map(
+                "map_3218cf8dee1dc3377e5cf19fdc13a067",
+                {
+                    center: [61.495722, 21.810987],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 16,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_b54a53a3fb70a649e6bc3b9f3ec2efb8 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_b54a53a3fb70a649e6bc3b9f3ec2efb8.addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+            var marker_d146fa4fdbcd4b7b2e3735fc8748c3ff = L.marker(
+                [61.495722, 21.810987],
+                {
+}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+            var icon_896103cff9e482ad7c2dafb2185c9c8c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "building",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b0bfb13233a29eea0baf4fd1190c3a63 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1b5890fa83692a3a1eaab13a0a728d33 = $(`<div id="html_1b5890fa83692a3a1eaab13a0a728d33" style="width: 100.0%; height: 100.0%;"><b>DATACENTER SITE CENTER</b><br>Konepajanranta, Pori<br>Coordinates: 61.49572, 21.81099</div>`)[0];
+                popup_b0bfb13233a29eea0baf4fd1190c3a63.setContent(html_1b5890fa83692a3a1eaab13a0a728d33);
+            
+        
+
+        marker_d146fa4fdbcd4b7b2e3735fc8748c3ff.bindPopup(popup_b0bfb13233a29eea0baf4fd1190c3a63)
+        ;
+
+        
+    
+    
+            marker_d146fa4fdbcd4b7b2e3735fc8748c3ff.bindTooltip(
+                `<div>
+                     Datacenter Site Center
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d146fa4fdbcd4b7b2e3735fc8748c3ff.setIcon(icon_896103cff9e482ad7c2dafb2185c9c8c);
+            
+    
+            var circle_2eeacf09d08d378bc905f82322b18e33 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#d32f2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d32f2f", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 50, "stroke": true, "weight": 3}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_74b437048b47c7296d7cd29b348d5c95 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_82954218c8cdb7233d09e2113f4e6042 = $(`<div id="html_82954218c8cdb7233d09e2113f4e6042" style="width: 100.0%; height: 100.0%;"><b>Heat Dissipation Zone</b><br>Rate: 95-105 MW<br>Maximum heat generation zone<br>Radius: 50m</div>`)[0];
+                popup_74b437048b47c7296d7cd29b348d5c95.setContent(html_82954218c8cdb7233d09e2113f4e6042);
+            
+        
+
+        circle_2eeacf09d08d378bc905f82322b18e33.bindPopup(popup_74b437048b47c7296d7cd29b348d5c95)
+        ;
+
+        
+    
+    
+            circle_2eeacf09d08d378bc905f82322b18e33.bindTooltip(
+                `<div>
+                     Heat Zone: 95-105 MW
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_6d83edf3017943ab0da2fb1e4a1a8bb5 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#f57c00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f57c00", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 100, "stroke": true, "weight": 3}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_904c2c53223fef6b04cbd8063b1034fc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b0bffd2749cf91c5c42c504f30b6167d = $(`<div id="html_b0bffd2749cf91c5c42c504f30b6167d" style="width: 100.0%; height: 100.0%;"><b>Heat Dissipation Zone</b><br>Rate: 80-95 MW<br>High heat dissipation<br>Radius: 100m</div>`)[0];
+                popup_904c2c53223fef6b04cbd8063b1034fc.setContent(html_b0bffd2749cf91c5c42c504f30b6167d);
+            
+        
+
+        circle_6d83edf3017943ab0da2fb1e4a1a8bb5.bindPopup(popup_904c2c53223fef6b04cbd8063b1034fc)
+        ;
+
+        
+    
+    
+            circle_6d83edf3017943ab0da2fb1e4a1a8bb5.bindTooltip(
+                `<div>
+                     Heat Zone: 80-95 MW
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_95551e1b1c8da0436428c0e67be62d88 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#fbc02d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fbc02d", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 200, "stroke": true, "weight": 3}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_5b5d5d6a5c0abea32ff9041fbfb5c964 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_de6c281c23b8f169d6d8353df1b1fcfb = $(`<div id="html_de6c281c23b8f169d6d8353df1b1fcfb" style="width: 100.0%; height: 100.0%;"><b>Heat Dissipation Zone</b><br>Rate: 60-80 MW<br>Moderate heat impact<br>Radius: 200m</div>`)[0];
+                popup_5b5d5d6a5c0abea32ff9041fbfb5c964.setContent(html_de6c281c23b8f169d6d8353df1b1fcfb);
+            
+        
+
+        circle_95551e1b1c8da0436428c0e67be62d88.bindPopup(popup_5b5d5d6a5c0abea32ff9041fbfb5c964)
+        ;
+
+        
+    
+    
+            circle_95551e1b1c8da0436428c0e67be62d88.bindTooltip(
+                `<div>
+                     Heat Zone: 60-80 MW
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_c14d4aa1f8e477262fc74bfbc2bea279 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "#4caf50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4caf50", "fillOpacity": 0.1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500, "stroke": true, "weight": 3}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_d88d5efcdd26a2b4384e962ec2da9454 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9966a975a7bd91806f620acc47a4baf2 = $(`<div id="html_9966a975a7bd91806f620acc47a4baf2" style="width: 100.0%; height: 100.0%;"><b>Heat Dissipation Zone</b><br>Rate: <60 MW<br>Minimal heat impact<br>Radius: 500m</div>`)[0];
+                popup_d88d5efcdd26a2b4384e962ec2da9454.setContent(html_9966a975a7bd91806f620acc47a4baf2);
+            
+        
+
+        circle_c14d4aa1f8e477262fc74bfbc2bea279.bindPopup(popup_d88d5efcdd26a2b4384e962ec2da9454)
+        ;
+
+        
+    
+    
+            circle_c14d4aa1f8e477262fc74bfbc2bea279.bindTooltip(
+                `<div>
+                     Heat Zone: <60 MW
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_216fa6298a1a94b64d8fedcc495003b2 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "gray", "dashArray": "5,5", "dashOffset": null, "fill": false, "fillColor": "gray", "fillOpacity": 0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 100, "stroke": true, "weight": 1}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_a0e85fe671b89162c7ef85c5c6ccb30b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_59f5e5b937294d472b0444508ed9cc16 = $(`<div id="html_59f5e5b937294d472b0444508ed9cc16" style="width: 100.0%; height: 100.0%;">100m from site center</div>`)[0];
+                popup_a0e85fe671b89162c7ef85c5c6ccb30b.setContent(html_59f5e5b937294d472b0444508ed9cc16);
+            
+        
+
+        circle_216fa6298a1a94b64d8fedcc495003b2.bindPopup(popup_a0e85fe671b89162c7ef85c5c6ccb30b)
+        ;
+
+        
+    
+    
+            var circle_95a9f14ae1af8a99ef3a67c61c39279d = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "gray", "dashArray": "5,5", "dashOffset": null, "fill": false, "fillColor": "gray", "fillOpacity": 0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500, "stroke": true, "weight": 1}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_58a23eaadd48028cbc71f347431e8f03 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9c71ec10f583d02d431d1f38b56e5019 = $(`<div id="html_9c71ec10f583d02d431d1f38b56e5019" style="width: 100.0%; height: 100.0%;">500m from site center</div>`)[0];
+                popup_58a23eaadd48028cbc71f347431e8f03.setContent(html_9c71ec10f583d02d431d1f38b56e5019);
+            
+        
+
+        circle_95a9f14ae1af8a99ef3a67c61c39279d.bindPopup(popup_58a23eaadd48028cbc71f347431e8f03)
+        ;
+
+        
+    
+    
+            var circle_55e7a6ecb753a264823d5dfc52a74832 = L.circle(
+                [61.495722, 21.810987],
+                {"bubblingMouseEvents": true, "color": "gray", "dashArray": "5,5", "dashOffset": null, "fill": false, "fillColor": "gray", "fillOpacity": 0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 1}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_12333435a4c05de985c13a63c77420ed = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_cabfe04878881b26e15e4a0e823cf088 = $(`<div id="html_cabfe04878881b26e15e4a0e823cf088" style="width: 100.0%; height: 100.0%;">1000m from site center</div>`)[0];
+                popup_12333435a4c05de985c13a63c77420ed.setContent(html_cabfe04878881b26e15e4a0e823cf088);
+            
+        
+
+        circle_55e7a6ecb753a264823d5dfc52a74832.bindPopup(popup_12333435a4c05de985c13a63c77420ed)
+        ;
+
+        
+    
+    
+            var poly_line_0bcb19a7c4e52585c388cdb608732166 = L.polyline(
+                [[61.498722, 21.805987000000002], [61.496722, 21.808987000000002], [61.494722, 21.811987000000002], [61.492722, 21.814987000000002]],
+                {"bubblingMouseEvents": true, "color": "#1976d2", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1976d2", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_b1a1e3690ed9170d45172a579fa765c7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e893f038285e5a3fd347a7b0f4031bd4 = $(`<div id="html_e893f038285e5a3fd347a7b0f4031bd4" style="width: 100.0%; height: 100.0%;"><b>Kokemäenjoki River</b><br>Cooling water source</div>`)[0];
+                popup_b1a1e3690ed9170d45172a579fa765c7.setContent(html_e893f038285e5a3fd347a7b0f4031bd4);
+            
+        
+
+        poly_line_0bcb19a7c4e52585c388cdb608732166.bindPopup(popup_b1a1e3690ed9170d45172a579fa765c7)
+        ;
+
+        
+    
+    
+            poly_line_0bcb19a7c4e52585c388cdb608732166.bindTooltip(
+                `<div>
+                     Kokemäenjoki River
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_ec9938d11fa4ff693fb8d4673b6fce39 = L.polyline(
+                [[61.495722, 21.810987], [61.500722, 21.818987], [61.505722, 21.825987]],
+                {"bubblingMouseEvents": true, "color": "#ff5722", "dashArray": "10,5", "dashOffset": null, "fill": false, "fillColor": "#ff5722", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_3218cf8dee1dc3377e5cf19fdc13a067);
+        
+    
+        var popup_4888d4897752c1da5ff69d1c01e8a485 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_819cf9e0f679e311028fce6d99890a53 = $(`<div id="html_819cf9e0f679e311028fce6d99890a53" style="width: 100.0%; height: 100.0%;"><b>District Heating Connection</b><br>Waste heat recovery: 20 MW<br>Pipeline to Pori Energia network</div>`)[0];
+                popup_4888d4897752c1da5ff69d1c01e8a485.setContent(html_819cf9e0f679e311028fce6d99890a53);
+            
+        
+
+        poly_line_ec9938d11fa4ff693fb8d4673b6fce39.bindPopup(popup_4888d4897752c1da5ff69d1c01e8a485)
+        ;
+
+        
+    
+    
+            poly_line_ec9938d11fa4ff693fb8d4673b6fce39.bindTooltip(
+                `<div>
+                     District Heating Pipeline
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var measure_control_6254ffdf549e75a28eccce2e8836ffe9 = new L.Control.Measure(
+                {
+  "position": "topright",
+  "primaryLengthUnit": "meters",
+  "secondaryLengthUnit": "miles",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "acres",
+});
+            map_3218cf8dee1dc3377e5cf19fdc13a067.addControl(measure_control_6254ffdf549e75a28eccce2e8836ffe9);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+</script>
+</html>

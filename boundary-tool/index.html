@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pori Datacenter - Site Boundary Definition Tool</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet Draw CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1>🏢 Pori Datacenter Site Boundary Tool</h1>
+                <div class="coordinates-display">
+                    <span id="mouse-coords">--</span>
+                    <span class="separator">|</span>
+                    <span id="area-display">Area: -- m²</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Location Info -->
+                <div class="panel">
+                    <h3>📍 Site Location</h3>
+                    <div class="info-grid">
+                        <label>Location:</label>
+                        <span>Konepajanranta, Pori</span>
+                        <label>Estimated Center:</label>
+                        <span id="center-coords">61.4945, 21.810</span>
+                        <label>Target Area:</label>
+                        <span>150,000 m² (15 ha)</span>
+                        <label>Phase I:</label>
+                        <span>60,000-70,000 m²</span>
+                        <label>Phase II:</label>
+                        <span>90,000 m²</span>
+                    </div>
+                </div>
+
+                <!-- Drawing Tools -->
+                <div class="panel">
+                    <h3>✏️ Drawing Tools</h3>
+                    <div class="button-group">
+                        <button id="draw-polygon" class="btn btn-primary">
+                            <span class="icon">🔷</span> Draw Polygon
+                        </button>
+                        <button id="draw-rectangle" class="btn btn-primary">
+                            <span class="icon">▭</span> Draw Rectangle
+                        </button>
+                        <button id="edit-polygon" class="btn btn-secondary">
+                            <span class="icon">✏️</span> Edit Shape
+                        </button>
+                        <button id="delete-polygon" class="btn btn-danger">
+                            <span class="icon">🗑️</span> Delete Shape
+                        </button>
+                    </div>
+                    <div class="instructions">
+                        <p><small>Click points to create polygon. Double-click to finish.</small></p>
+                    </div>
+                </div>
+
+                <!-- Import/Export -->
+                <div class="panel">
+                    <h3>📁 Import/Export</h3>
+                    
+                    <!-- Import Section -->
+                    <div class="import-section">
+                        <div id="drop-zone" class="drop-zone">
+                            <p>Drag & Drop Files Here</p>
+                            <p class="file-types">GeoJSON, KML, GPX, CSV</p>
+                            <input type="file" id="file-input" accept=".json,.geojson,.kml,.kmz,.gpx,.csv" hidden>
+                            <button id="browse-files" class="btn btn-secondary">Browse Files</button>
+                        </div>
+                        
+                        <div class="wkt-input">
+                            <label>Paste WKT:</label>
+                            <textarea id="wkt-input" placeholder="POLYGON((...))" rows="3"></textarea>
+                            <button id="import-wkt" class="btn btn-secondary">Import WKT</button>
+                        </div>
+                    </div>
+
+                    <!-- Export Section -->
+                    <div class="export-section">
+                        <h4>Export As:</h4>
+                        <div class="button-group">
+                            <button id="export-geojson" class="btn btn-success">GeoJSON</button>
+                            <button id="export-kml" class="btn btn-success">KML</button>
+                            <button id="export-wkt" class="btn btn-success">WKT</button>
+                            <button id="export-coords" class="btn btn-success">Coordinates</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Area Analysis -->
+                <div class="panel">
+                    <h3>📊 Area Analysis</h3>
+                    <div id="area-analysis" class="area-analysis">
+                        <div class="analysis-item">
+                            <label>Total Area:</label>
+                            <span id="total-area">-- m²</span>
+                        </div>
+                        <div class="analysis-item">
+                            <label>Hectares:</label>
+                            <span id="area-hectares">-- ha</span>
+                        </div>
+                        <div class="analysis-item">
+                            <label>Perimeter:</label>
+                            <span id="perimeter">-- m</span>
+                        </div>
+                        <div class="analysis-item">
+                            <label>Vertices:</label>
+                            <span id="vertex-count">--</span>
+                        </div>
+                    </div>
+                    <div class="phase-indicators">
+                        <div class="phase-indicator" id="phase1-indicator">
+                            <div class="indicator-bar">
+                                <div class="indicator-fill" id="phase1-fill"></div>
+                            </div>
+                            <span>Phase I: <span id="phase1-percent">0%</span></span>
+                        </div>
+                        <div class="phase-indicator" id="phase2-indicator">
+                            <div class="indicator-bar">
+                                <div class="indicator-fill" id="phase2-fill"></div>
+                            </div>
+                            <span>Phase II: <span id="phase2-percent">0%</span></span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Map Container -->
+            <main class="map-container">
+                <div id="map"></div>
+                
+                <!-- Map Controls Overlay -->
+                <div class="map-controls">
+                    <div class="control-group">
+                        <button id="zoom-to-site" class="map-control-btn" title="Zoom to Site">
+                            🎯
+                        </button>
+                        <button id="toggle-satellite" class="map-control-btn" title="Toggle Satellite">
+                            🛰️
+                        </button>
+                        <button id="toggle-grid" class="map-control-btn" title="Toggle Grid">
+                            #
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <span id="status-message">Ready. Click "Draw Polygon" to define site boundary.</span>
+                    <span id="projection-info">WGS84 | ETRS89/TM35FIN</span>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Leaflet Draw JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    
+    <!-- Turf.js for geospatial calculations -->
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    
+    <!-- Application JS (compiled TypeScript modules) -->
+    <script type="module" src="dist/main.js"></script>
+</body>
+</html>
