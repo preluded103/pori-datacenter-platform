@@ -1,9 +1,71 @@
 'use client';
 
-import React from 'react';
-import { MapPin, Zap, Droplets, Wifi, Clock, AlertTriangle, CheckCircle, Download, Eye, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { MapPin, Zap, Droplets, Wifi, Clock, AlertTriangle, CheckCircle, Download, Eye, TrendingUp, Map, RefreshCw } from 'lucide-react';
+import GISPlatform from '../../components/GISPlatform';
+import ConstraintVisualization from '../../components/ConstraintVisualization';
+import { generatePoriConstraintAnalysis, DEMO_SITES } from '../../lib/pori-demo-data';
+import { SupabaseAPI, type Site } from '../../lib/supabase-client';
 
 const DemoPage = () => {
+  const [activeView, setActiveView] = useState<'overview' | 'gis'>('overview');
+  const [selectedSite, setSelectedSite] = useState(DEMO_SITES[0]);
+
+  const handleSiteSelect = (site: any) => {
+    setSelectedSite(site);
+  };
+  const [constraintAnalysis, setConstraintAnalysis] = useState(generatePoriConstraintAnalysis());
+  const [sites, setSites] = useState(DEMO_SITES);
+  const [loading, setLoading] = useState(false);
+  const [dbConnected, setDbConnected] = useState(false);
+
+  // Test database connection on component mount
+  useEffect(() => {
+    const testConnection = async () => {
+      const connected = await SupabaseAPI.testConnection();
+      setDbConnected(connected);
+      
+      if (connected) {
+        try {
+          setLoading(true);
+          // Try to load real data from Supabase
+          const dbSites = await SupabaseAPI.getSites();
+          if (dbSites.length > 0) {
+            // Convert database sites to demo format
+            const convertedSites = dbSites.map(site => ({
+              id: site.id,
+              name: site.name,
+              coordinates: SupabaseAPI.parsePostGISPoint(site.location),
+              properties: {
+                powerRequirement: site.power_requirement_mw || 0,
+                area: site.area_hectares || 0,
+                status: site.assessment_status,
+                score: site.overall_score,
+                country: site.country_code,
+                region: site.region
+              }
+            }));
+            setSites(convertedSites);
+            
+            // Load constraint analysis for first site
+            if (convertedSites.length > 0) {
+              const constraints = await SupabaseAPI.getSiteWithConstraints(convertedSites[0].id);
+              if (constraints) {
+                setConstraintAnalysis(constraints);
+              }
+            }
+          }
+        } catch (error) {
+          console.warn('Failed to load data from Supabase, using demo data:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    testConnection();
+  }, []);
+
   // Mock data showing our Pori success transformed into Phase 0 format
   const demoProject = {
     name: 'Nordic Datacenter Expansion',
@@ -140,22 +202,60 @@ const DemoPage = () => {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-[#fafafa]">Pre-DD Intelligence Platform</h1>
-            <p className="text-sm text-[#a1a1aa]">Phase 0 Screening Results</p>
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-[#a1a1aa]">Phase 0 Screening Results</p>
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${dbConnected ? 'bg-green-400' : 'bg-red-400'}`} />
+                <span className="text-xs text-[#71717a]">
+                  {dbConnected ? 'Database Connected' : 'Demo Mode'}
+                </span>
+                {loading && <RefreshCw className="h-3 w-3 text-blue-400 animate-spin" />}
+              </div>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button className="px-4 py-2 bg-[#1a1a1f] hover:bg-[#27272a] text-[#fafafa] border border-[#27272a] rounded-md flex items-center gap-2 transition-all">
               <Download className="h-4 w-4" />
               Export Report
             </button>
-            <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md flex items-center gap-2 transition-all">
-              <Eye className="h-4 w-4" />
-              Live Platform
+            <button 
+              onClick={() => setActiveView(activeView === 'overview' ? 'gis' : 'overview')}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md flex items-center gap-2 transition-all"
+            >
+              {activeView === 'overview' ? <Map className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {activeView === 'overview' ? 'GIS Platform' : 'Overview'}
             </button>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      {/* GIS Platform View */}
+      {activeView === 'gis' && (
+        <div className="flex h-[calc(100vh-4rem)]">
+          {/* Main Map */}
+          <div className="flex-1 relative">
+            <GISPlatform
+              initialCenter={[21.7972, 61.4851]}
+              initialZoom={12}
+              sites={sites}
+              onSiteSelect={handleSiteSelect}
+              className="h-full"
+            />
+          </div>
+          
+          {/* Constraint Panel */}
+          <div className="w-96 border-l border-[#27272a] bg-[#131316]">
+            <ConstraintVisualization
+              analysis={constraintAnalysis}
+              className="h-full border-0"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Overview Mode */}
+      {activeView === 'overview' && (
+        <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Project Summary */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -416,7 +516,8 @@ const DemoPage = () => {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

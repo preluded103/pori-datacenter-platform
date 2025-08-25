@@ -158,7 +158,7 @@ export class InfrastructureProximityAnalyzer {
     }
 
     // Find nearest substation
-    const nearest = turf.nearestPoint(site, substations);
+    const nearest = turf.nearestPoint(site, substations as any as any);
     const distance = turf.distance(site, nearest, { units: 'meters' });
     
     // Extract properties if available
@@ -189,9 +189,9 @@ export class InfrastructureProximityAnalyzer {
     return {
       nearestSubstation: {
         distance: Math.round(distance),
-        name: props.name,
-        voltageKv: props.voltage_kv,
-        confidence: props.source ? 'HIGH' : 'MEDIUM'
+        name: (props as any).name || 'Unknown',
+        voltageKv: (props as any).voltage_kv || 0,
+        confidence: (props as any).source ? 'HIGH' : 'MEDIUM'
       },
       transmissionLineDistance: transmissionDistance,
       riskLevel,
@@ -254,7 +254,7 @@ export class InfrastructureProximityAnalyzer {
     }
 
     // Find nearest water body
-    const nearest = turf.nearestPoint(site, waterBodies);
+    const nearest = turf.nearestPoint(site, waterBodies as any as any);
     const distance = turf.distance(site, nearest, { units: 'meters' });
     const waterType = nearest.properties?.water_type || 'unknown';
     
@@ -319,7 +319,7 @@ export class InfrastructureProximityAnalyzer {
 
     // Check airport proximity (for restrictions)
     if (airports && airports.features.length > 0) {
-      const nearest = turf.nearestPoint(site, airports);
+      const nearest = turf.nearestPoint(site, airports as any);
       airportDistance = Math.round(turf.distance(site, nearest, { units: 'meters' }));
     }
 
