@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { MapPin, Zap, Droplets, Wifi, Clock, AlertTriangle, CheckCircle, Download, Eye, TrendingUp, Map, RefreshCw } from 'lucide-react';
-import GISPlatform from '../../components/GISPlatform';
+import ComprehensiveMap from '../../components/geospatial/ComprehensiveMap';
 import ConstraintVisualization from '../../components/ConstraintVisualization';
 import { generatePoriConstraintAnalysis, DEMO_SITES } from '../../lib/pori-demo-data';
-import { SupabaseAPI, type Site } from '../../lib/supabase-client';
+// Using demo data directly, no database imports needed for demo
 
 const DemoPage = () => {
   const [activeView, setActiveView] = useState<'overview' | 'gis'>('overview');
@@ -19,165 +19,50 @@ const DemoPage = () => {
   const [loading, setLoading] = useState(false);
   const [dbConnected, setDbConnected] = useState(false);
 
-  // Test database connection on component mount
+  // Use demo data directly for now
   useEffect(() => {
-    const testConnection = async () => {
-      const connected = await SupabaseAPI.testConnection();
-      setDbConnected(connected);
-      
-      if (connected) {
-        try {
-          setLoading(true);
-          // Try to load real data from Supabase
-          const dbSites = await SupabaseAPI.getSites();
-          if (dbSites.length > 0) {
-            // Convert database sites to demo format
-            const convertedSites = dbSites.map(site => ({
-              id: site.id,
-              name: site.name,
-              coordinates: SupabaseAPI.parsePostGISPoint(site.location),
-              properties: {
-                powerRequirement: site.power_requirement_mw || 0,
-                area: site.area_hectares || 0,
-                status: site.assessment_status,
-                score: site.overall_score,
-                country: site.country_code,
-                region: site.region
-              }
-            }));
-            setSites(convertedSites);
-            
-            // Load constraint analysis for first site
-            if (convertedSites.length > 0) {
-              const constraints = await SupabaseAPI.getSiteWithConstraints(convertedSites[0].id);
-              if (constraints) {
-                setConstraintAnalysis(constraints);
-              }
-            }
-          }
-        } catch (error) {
-          console.warn('Failed to load data from Supabase, using demo data:', error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    testConnection();
+    setDbConnected(true); // Set to true for demo purposes
   }, []);
 
-  // Mock data showing our Pori success transformed into Phase 0 format
+  // Demo project - focused on Pori site analysis
   const demoProject = {
-    name: 'Nordic Datacenter Expansion',
+    name: 'Pori Datacenter Site Assessment',
     client: 'European DC Development Ltd.',
     analysisDate: '2025-01-25',
-    sites: [
-      {
-        id: 'pori-1',
-        name: 'Pori Konepajanranta',
-        location: 'Pori, Finland',
-        coordinates: '61.4957°N, 21.8110°E',
-        area: 15,
-        powerReq: 70,
-        status: 'completed',
-        score: {
-          overall: 7.8,
-          infrastructure: 8.2,
-          environmental: 7.1,
-          regulatory: 8.5,
-          technical: 7.4,
-          timeline: 6.8,
-          recommendation: 'PROCEED',
-          confidence: 'HIGH'
-        },
-        flags: {
-          critical: [
-            'Grid connection requires 220kV investment (€8-15M)',
-            'River cooling permits required (12-18 months)'
-          ],
-          strengths: [
-            'Industrial zoning pre-approved for datacenters',
-            'Excellent transport connectivity via Highway 11',
-            'Municipal district heating integration opportunity'
-          ]
-        },
-        costs: {
-          infrastructure: '€8-15M',
-          timeline: '36-48mo',
-          complexity: 'MEDIUM'
-        }
+    site: {
+      id: 'pori-1',
+      name: 'Pori Konepajanranta',
+      location: 'Pori, Finland',
+      coordinates: '61.4957°N, 21.8110°E',
+      area: 15,
+      powerReq: 70,
+      status: 'completed',
+      score: {
+        overall: constraintAnalysis.overall_score,
+        infrastructure: 8.2,
+        environmental: 7.1,
+        regulatory: 8.5,
+        technical: 7.4,
+        timeline: 6.8,
+        recommendation: constraintAnalysis.recommendation.toUpperCase(),
+        confidence: 'HIGH'
       },
-      {
-        id: 'tampere-1',
-        name: 'Tampere Industrial',
-        location: 'Tampere, Finland',
-        coordinates: '61.4991°N, 23.7871°E',
-        area: 12,
-        powerReq: 50,
-        status: 'completed',
-        score: {
-          overall: 6.2,
-          infrastructure: 5.8,
-          environmental: 6.5,
-          regulatory: 7.1,
-          technical: 6.9,
-          timeline: 5.4,
-          recommendation: 'CAUTION',
-          confidence: 'MEDIUM'
-        },
-        flags: {
-          critical: [
-            'Power infrastructure 18km away - high connection cost',
-            'Limited water cooling options identified',
-            'Complex municipal approval process'
-          ],
-          strengths: [
-            'Strong fiber connectivity infrastructure',
-            'No protected area conflicts'
-          ]
-        },
-        costs: {
-          infrastructure: '€15-25M',
-          timeline: '48-60mo',
-          complexity: 'HIGH'
-        }
+      flags: {
+        critical: constraintAnalysis.constraints
+          .filter(c => c.severity === 'critical')
+          .map(c => c.description),
+        strengths: [
+          'Industrial zoning pre-approved for datacenters',
+          'Excellent transport connectivity via Highway 11',
+          'Municipal district heating integration opportunity'
+        ]
       },
-      {
-        id: 'oslo-1',
-        name: 'Oslo South',
-        location: 'Oslo, Norway',
-        coordinates: '59.9139°N, 10.7522°E',
-        area: 20,
-        powerReq: 100,
-        status: 'completed',
-        score: {
-          overall: 8.4,
-          infrastructure: 9.1,
-          environmental: 7.8,
-          regulatory: 8.2,
-          technical: 8.5,
-          timeline: 7.9,
-          recommendation: 'PROCEED',
-          confidence: 'HIGH'
-        },
-        flags: {
-          critical: [
-            'Height restrictions due to airport proximity'
-          ],
-          strengths: [
-            'Excellent grid infrastructure within 3km',
-            'Abundant hydroelectric power availability',
-            'Strong regulatory support for datacenters',
-            'Fjord cooling water access'
-          ]
-        },
-        costs: {
-          infrastructure: '€5-10M',
-          timeline: '24-36mo',
-          complexity: 'LOW'
-        }
+      costs: {
+        infrastructure: '€8-15M',
+        timeline: '36-48mo',
+        complexity: 'MEDIUM'
       }
-    ]
+    }
   };
 
   const getScoreColor = (score: number) => {
@@ -223,7 +108,7 @@ const DemoPage = () => {
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md flex items-center gap-2 transition-all"
             >
               {activeView === 'overview' ? <Map className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              {activeView === 'overview' ? 'GIS Platform' : 'Overview'}
+              {activeView === 'overview' ? 'Map' : 'Overview'}
             </button>
           </div>
         </div>
@@ -234,11 +119,10 @@ const DemoPage = () => {
         <div className="flex h-[calc(100vh-4rem)]">
           {/* Main Map */}
           <div className="flex-1 relative">
-            <GISPlatform
-              initialCenter={[21.7972, 61.4851]}
-              initialZoom={12}
-              sites={sites}
-              onSiteSelect={handleSiteSelect}
+            <ComprehensiveMap
+              center={[21.7972, 61.4851]}
+              zoom={12}
+              countryCode="FI"
               className="h-full"
             />
           </div>
@@ -264,8 +148,8 @@ const DemoPage = () => {
               <p className="text-[#a1a1aa]">Client: {demoProject.client} • Analysis Date: {demoProject.analysisDate}</p>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-blue-400">3 Sites</div>
-              <div className="text-sm text-[#a1a1aa]">Analyzed in 8 days</div>
+              <div className="text-2xl font-bold text-blue-400">1 Site</div>
+              <div className="text-sm text-[#a1a1aa]">Analyzed in 3 days</div>
             </div>
           </div>
 
@@ -274,8 +158,8 @@ const DemoPage = () => {
             <div className="bg-[#131316] border border-[#27272a] rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[#a1a1aa] text-sm">Proceed</p>
-                  <p className="text-2xl font-bold text-green-400">2</p>
+                  <p className="text-[#a1a1aa] text-sm">Status</p>
+                  <p className="text-2xl font-bold text-green-400">{demoProject.site.score.recommendation}</p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-green-400" />
               </div>
@@ -284,8 +168,8 @@ const DemoPage = () => {
             <div className="bg-[#131316] border border-[#27272a] rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[#a1a1aa] text-sm">Caution</p>
-                  <p className="text-2xl font-bold text-yellow-400">1</p>
+                  <p className="text-[#a1a1aa] text-sm">Critical Issues</p>
+                  <p className="text-2xl font-bold text-yellow-400">{constraintAnalysis.critical_count}</p>
                 </div>
                 <AlertTriangle className="h-8 w-8 text-yellow-400" />
               </div>
@@ -294,8 +178,8 @@ const DemoPage = () => {
             <div className="bg-[#131316] border border-[#27272a] rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[#a1a1aa] text-sm">Avg Score</p>
-                  <p className="text-2xl font-bold text-blue-400">7.5</p>
+                  <p className="text-[#a1a1aa] text-sm">Overall Score</p>
+                  <p className="text-2xl font-bold text-blue-400">{constraintAnalysis.overall_score}</p>
                 </div>
                 <TrendingUp className="h-8 w-8 text-blue-400" />
               </div>
@@ -304,8 +188,8 @@ const DemoPage = () => {
             <div className="bg-[#131316] border border-[#27272a] rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[#a1a1aa] text-sm">Total Investment</p>
-                  <p className="text-2xl font-bold text-purple-400">€28-50M</p>
+                  <p className="text-[#a1a1aa] text-sm">Investment Required</p>
+                  <p className="text-2xl font-bold text-purple-400">{demoProject.site.costs.infrastructure}</p>
                 </div>
                 <Clock className="h-8 w-8 text-purple-400" />
               </div>
@@ -313,179 +197,160 @@ const DemoPage = () => {
           </div>
         </div>
 
-        {/* Site Comparison Matrix */}
+        {/* Site Overview */}
         <div className="mb-8">
-          <h3 className="text-xl font-semibold text-[#fafafa] mb-4">Site Comparison Matrix</h3>
-          <div className="bg-[#131316] border border-[#27272a] rounded-lg overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-[#1a1a1f] border-b border-[#27272a]">
-                  <tr>
-                    <th className="text-left py-3 px-4 text-[#a1a1aa] font-medium">Site</th>
-                    <th className="text-center py-3 px-4 text-[#a1a1aa] font-medium">Score</th>
-                    <th className="text-center py-3 px-4 text-[#a1a1aa] font-medium">Infrastructure</th>
-                    <th className="text-center py-3 px-4 text-[#a1a1aa] font-medium">Environmental</th>
-                    <th className="text-center py-3 px-4 text-[#a1a1aa] font-medium">Regulatory</th>
-                    <th className="text-center py-3 px-4 text-[#a1a1aa] font-medium">Investment</th>
-                    <th className="text-center py-3 px-4 text-[#a1a1aa] font-medium">Timeline</th>
-                    <th className="text-center py-3 px-4 text-[#a1a1aa] font-medium">Recommendation</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#27272a]">
-                  {demoProject.sites.map((site, index) => (
-                    <tr key={site.id} className="hover:bg-[#1a1a1f] transition-colors">
-                      <td className="py-4 px-4">
-                        <div>
-                          <div className="font-medium text-[#fafafa]">{site.name}</div>
-                          <div className="text-sm text-[#a1a1aa]">{site.location}</div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <div className={`text-xl font-bold ${getScoreColor(site.score.overall)}`}>
-                          {site.score.overall}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <div className={`font-medium ${getScoreColor(site.score.infrastructure)}`}>
-                          {site.score.infrastructure}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <div className={`font-medium ${getScoreColor(site.score.environmental)}`}>
-                          {site.score.environmental}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <div className={`font-medium ${getScoreColor(site.score.regulatory)}`}>
-                          {site.score.regulatory}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-center text-[#fafafa] font-medium">
-                        {site.costs.infrastructure}
-                      </td>
-                      <td className="py-4 px-4 text-center text-[#fafafa] font-medium">
-                        {site.costs.timeline}
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getRecommendationColor(site.score.recommendation)}`}>
-                          {site.score.recommendation}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <h3 className="text-xl font-semibold text-[#fafafa] mb-4">Site Overview</h3>
+          <div className="bg-[#131316] border border-[#27272a] rounded-lg p-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="text-sm text-[#a1a1aa] mb-1">Overall Score</div>
+                <div className={`text-2xl font-bold ${getScoreColor(demoProject.site.score.overall)}`}>
+                  {demoProject.site.score.overall}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-sm text-[#a1a1aa] mb-1">Infrastructure</div>
+                <div className={`text-xl font-bold ${getScoreColor(demoProject.site.score.infrastructure)}`}>
+                  {demoProject.site.score.infrastructure}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-sm text-[#a1a1aa] mb-1">Environmental</div>
+                <div className={`text-xl font-bold ${getScoreColor(demoProject.site.score.environmental)}`}>
+                  {demoProject.site.score.environmental}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-sm text-[#a1a1aa] mb-1">Regulatory</div>
+                <div className={`text-xl font-bold ${getScoreColor(demoProject.site.score.regulatory)}`}>
+                  {demoProject.site.score.regulatory}
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 pt-6 border-t border-[#27272a] grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <div>
+                <div className="text-sm text-[#a1a1aa] mb-1">Investment Required</div>
+                <div className="text-lg font-medium text-[#fafafa]">{demoProject.site.costs.infrastructure}</div>
+              </div>
+              <div>
+                <div className="text-sm text-[#a1a1aa] mb-1">Timeline</div>
+                <div className="text-lg font-medium text-[#fafafa]">{demoProject.site.costs.timeline}</div>
+              </div>
+              <div>
+                <div className="text-sm text-[#a1a1aa] mb-1">Recommendation</div>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRecommendationColor(demoProject.site.score.recommendation)}`}>
+                  {demoProject.site.score.recommendation}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Detailed Site Cards */}
+        {/* Detailed Site Analysis */}
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-[#fafafa]">Detailed Site Analysis</h3>
           
-          {demoProject.sites.map((site) => (
-            <div key={site.id} className="bg-[#131316] border border-[#27272a] rounded-lg p-6">
-              {/* Site Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <h4 className="text-xl font-semibold text-[#fafafa] mb-1">{site.name}</h4>
-                  <p className="text-[#a1a1aa] mb-2">{site.location}</p>
-                  <div className="flex items-center gap-4 text-sm text-[#71717a]">
-                    <span>{site.area} hectares</span>
-                    <span>•</span>
-                    <span>{site.powerReq}MW requirement</span>
-                    <span>•</span>
-                    <span>{site.coordinates}</span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-3xl font-bold mb-1 ${getScoreColor(site.score.overall)}`}>
-                    {site.score.overall}
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRecommendationColor(site.score.recommendation)}`}>
-                    {site.score.recommendation}
-                  </span>
+          <div className="bg-[#131316] border border-[#27272a] rounded-lg p-6">
+            {/* Site Header */}
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h4 className="text-xl font-semibold text-[#fafafa] mb-1">{demoProject.site.name}</h4>
+                <p className="text-[#a1a1aa] mb-2">{demoProject.site.location}</p>
+                <div className="flex items-center gap-4 text-sm text-[#71717a]">
+                  <span>{demoProject.site.area} hectares</span>
+                  <span>•</span>
+                  <span>{demoProject.site.powerReq}MW requirement</span>
+                  <span>•</span>
+                  <span>{demoProject.site.coordinates}</span>
                 </div>
               </div>
-
-              {/* Score Breakdown */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-                {[
-                  { label: 'Infrastructure', value: site.score.infrastructure, icon: Zap },
-                  { label: 'Environmental', value: site.score.environmental, icon: Droplets },
-                  { label: 'Regulatory', value: site.score.regulatory, icon: MapPin },
-                  { label: 'Technical', value: site.score.technical, icon: Wifi },
-                  { label: 'Timeline', value: site.score.timeline, icon: Clock }
-                ].map((item, index) => (
-                  <div key={index} className="bg-[#1a1a1f] rounded-lg p-3 text-center">
-                    <item.icon className="h-5 w-5 mx-auto mb-2 text-[#a1a1aa]" />
-                    <div className={`text-lg font-bold ${getScoreColor(item.value)}`}>
-                      {item.value}
-                    </div>
-                    <div className="text-xs text-[#71717a]">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Development Indicators */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="bg-[#1a1a1f] rounded-lg p-4 text-center">
-                  <div className="text-xl font-bold text-[#fafafa] mb-1">{site.costs.infrastructure}</div>
-                  <div className="text-sm text-[#a1a1aa]">Infrastructure Investment</div>
+              <div className="text-right">
+                <div className={`text-3xl font-bold mb-1 ${getScoreColor(demoProject.site.score.overall)}`}>
+                  {demoProject.site.score.overall}
                 </div>
-                <div className="bg-[#1a1a1f] rounded-lg p-4 text-center">
-                  <div className="text-xl font-bold text-[#fafafa] mb-1">{site.costs.timeline}</div>
-                  <div className="text-sm text-[#a1a1aa]">Development Timeline</div>
-                </div>
-                <div className="bg-[#1a1a1f] rounded-lg p-4 text-center">
-                  <div className={`text-xl font-bold mb-1 ${
-                    site.costs.complexity === 'LOW' ? 'text-green-400' :
-                    site.costs.complexity === 'MEDIUM' ? 'text-yellow-400' : 'text-red-400'
-                  }`}>
-                    {site.costs.complexity}
-                  </div>
-                  <div className="text-sm text-[#a1a1aa]">Project Complexity</div>
-                </div>
-              </div>
-
-              {/* Flags */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {site.flags.critical.length > 0 && (
-                  <div>
-                    <h5 className="text-sm font-semibold text-red-400 mb-3 flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4" />
-                      Critical Issues
-                    </h5>
-                    <ul className="space-y-2">
-                      {site.flags.critical.map((flag, index) => (
-                        <li key={index} className="text-sm text-[#a1a1aa] flex items-start gap-2">
-                          <span className="text-red-400 mt-1">•</span>
-                          {flag}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {site.flags.strengths.length > 0 && (
-                  <div>
-                    <h5 className="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4" />
-                      Site Strengths
-                    </h5>
-                    <ul className="space-y-2">
-                      {site.flags.strengths.map((flag, index) => (
-                        <li key={index} className="text-sm text-[#a1a1aa] flex items-start gap-2">
-                          <span className="text-green-400 mt-1">•</span>
-                          {flag}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRecommendationColor(demoProject.site.score.recommendation)}`}>
+                  {demoProject.site.score.recommendation}
+                </span>
               </div>
             </div>
-          ))}
+
+            {/* Score Breakdown */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+              {[
+                { label: 'Infrastructure', value: demoProject.site.score.infrastructure, icon: Zap },
+                { label: 'Environmental', value: demoProject.site.score.environmental, icon: Droplets },
+                { label: 'Regulatory', value: demoProject.site.score.regulatory, icon: MapPin },
+                { label: 'Technical', value: demoProject.site.score.technical, icon: Wifi },
+                { label: 'Timeline', value: demoProject.site.score.timeline, icon: Clock }
+              ].map((item, index) => (
+                <div key={index} className="bg-[#1a1a1f] rounded-lg p-3 text-center">
+                  <item.icon className="h-5 w-5 mx-auto mb-2 text-[#a1a1aa]" />
+                  <div className={`text-lg font-bold ${getScoreColor(item.value)}`}>
+                    {item.value}
+                  </div>
+                  <div className="text-xs text-[#71717a]">{item.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Development Indicators */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-[#1a1a1f] rounded-lg p-4 text-center">
+                <div className="text-xl font-bold text-[#fafafa] mb-1">{demoProject.site.costs.infrastructure}</div>
+                <div className="text-sm text-[#a1a1aa]">Infrastructure Investment</div>
+              </div>
+              <div className="bg-[#1a1a1f] rounded-lg p-4 text-center">
+                <div className="text-xl font-bold text-[#fafafa] mb-1">{demoProject.site.costs.timeline}</div>
+                <div className="text-sm text-[#a1a1aa]">Development Timeline</div>
+              </div>
+              <div className="bg-[#1a1a1f] rounded-lg p-4 text-center">
+                <div className={`text-xl font-bold mb-1 ${
+                  demoProject.site.costs.complexity === 'LOW' ? 'text-green-400' :
+                  demoProject.site.costs.complexity === 'MEDIUM' ? 'text-yellow-400' : 'text-red-400'
+                }`}>
+                  {demoProject.site.costs.complexity}
+                </div>
+                <div className="text-sm text-[#a1a1aa]">Project Complexity</div>
+              </div>
+            </div>
+
+            {/* Flags */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {demoProject.site.flags.critical.length > 0 && (
+                <div>
+                  <h5 className="text-sm font-semibold text-red-400 mb-3 flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4" />
+                    Critical Issues
+                  </h5>
+                  <ul className="space-y-2">
+                    {demoProject.site.flags.critical.map((flag, index) => (
+                      <li key={index} className="text-sm text-[#a1a1aa] flex items-start gap-2">
+                        <span className="text-red-400 mt-1">•</span>
+                        {flag}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {demoProject.site.flags.strengths.length > 0 && (
+                <div>
+                  <h5 className="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    Site Strengths
+                  </h5>
+                  <ul className="space-y-2">
+                    {demoProject.site.flags.strengths.map((flag, index) => (
+                      <li key={index} className="text-sm text-[#a1a1aa] flex items-start gap-2">
+                        <span className="text-green-400 mt-1">•</span>
+                        {flag}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Platform Capabilities */}

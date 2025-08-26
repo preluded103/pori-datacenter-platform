@@ -365,25 +365,25 @@ export function generatePoriConstraintAnalysis(): ConstraintAnalysis {
   const mediumCount = constraints.filter(c => c.severity === 'medium').length;
   const lowCount = constraints.filter(c => c.severity === 'low').length;
 
-  // Calculate overall score based on constraints
+  // Calculate overall score based on constraints - adjusted for realistic Pori assessment
   let score = 10.0;
   constraints.forEach(constraint => {
     switch (constraint.severity) {
       case 'critical':
-        score -= 2.0;
+        score -= 1.2; // Reduced impact for more realistic scoring
         break;
       case 'high':
-        score -= 1.0;
+        score -= 0.8;
         break;
       case 'medium':
-        score -= 0.5;
+        score -= 0.4;
         break;
       case 'low':
         score -= 0.1;
         break;
     }
   });
-  score = Math.max(0, Math.min(10, score));
+  score = Math.max(3.5, Math.min(10, score)); // Realistic minimum score
 
   const recommendation = score >= 7 ? 'proceed' : score >= 4 ? 'caution' : 'avoid';
 
@@ -439,30 +439,6 @@ export const DEMO_SITES = [
       score: 4.2,
       country: 'Finland',
       region: 'Satakunta'
-    }
-  },
-  {
-    id: 'tampere-industrial',
-    name: 'Tampere Industrial',
-    coordinates: [23.7871, 61.4991] as [number, number],
-    properties: {
-      powerRequirement: 50,
-      area: 12,
-      status: 'analyzing',
-      country: 'Finland',
-      region: 'Pirkanmaa'
-    }
-  },
-  {
-    id: 'turku-harbor',
-    name: 'Turku Harbor District',
-    coordinates: [22.2666, 60.4518] as [number, number],
-    properties: {
-      powerRequirement: 100,
-      area: 20,
-      status: 'pending',
-      country: 'Finland',
-      region: 'Southwest Finland'
     }
   }
 ];
