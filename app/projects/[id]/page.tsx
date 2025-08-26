@@ -35,6 +35,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [mapError, setMapError] = useState<string | null>(null);
   
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -69,27 +70,50 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
     
-    mapboxgl.accessToken = 'pk.eyJ1IjoicHJlbHVkZWQiLCJhIjoiY2treXZsYmZhMDdsajJ2dWkwdjZib21hNyJ9.iYbWJ_lSePJw8c9AXaPL8A';
+    const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 'pk.eyJ1IjoicHJlbHVkZWQiLCJhIjoiY2treXZsYmZhMDdsajJ2dWkwdjZib21hNyJ9.iYbWJ_lSePJw8c9AXaPL8A';
     
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: mapStyle,
-      center: [21.7975, 61.4847], // Default to Pori, Finland
-      zoom: 12
-    });
-    
-    map.current.on('mousemove', (e) => {
-      setCoordinates({
-        lat: parseFloat(e.lngLat.lat.toFixed(6)),
-        lng: parseFloat(e.lngLat.lng.toFixed(6))
-      });
-    });
-    
-    map.current.on('load', () => {
-      // Add some sample data layers
-      addPowerInfrastructureLayer();
+    if (!mapboxToken) {
+      console.error('Mapbox token not found');
+      setMapError('Mapbox token not found. Please check configuration.');
       setLoading(false);
-    });
+      return;
+    }
+    
+    mapboxgl.accessToken = mapboxToken;
+    
+    try {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: mapStyle,
+        center: [21.7975, 61.4847], // Default to Pori, Finland
+        zoom: 12
+      });
+      
+      map.current.on('mousemove', (e) => {
+        setCoordinates({
+          lat: parseFloat(e.lngLat.lat.toFixed(6)),
+          lng: parseFloat(e.lngLat.lng.toFixed(6))
+        });
+      });
+      
+      map.current.on('load', () => {
+        console.log('Map loaded successfully');
+        // Add some sample data layers
+        addPowerInfrastructureLayer();
+        setLoading(false);
+      });
+      
+      map.current.on('error', (e) => {
+        console.error('Map error:', e);
+        setMapError(`Map error: ${e.error?.message || 'Unknown error'}`);
+        setLoading(false);
+      });
+      
+    } catch (error) {
+      console.error('Failed to initialize map:', error);
+      setMapError(`Failed to initialize map: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setLoading(false);
+    }
     
     return () => {
       if (map.current) {
@@ -371,8 +395,27 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
     return (
       <div className="min-h-screen bg-[#0a0a0b] text-[#fafafa] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin h-8 w-8 border-2 border-[#27272a] border-t-blue-600 rounded-full mx-auto mb-4"></div>
-          <p className="text-[#a1a1aa]">Loading map...</p>
+          {mapError ? (
+            <>
+              <div className="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-red-400 text-2xl">⚠</span>
+              </div>
+              <p className="text-red-400 mb-2">Map Loading Failed</p>
+              <p className="text-[#71717a] text-sm max-w-md">{mapError}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                Retry
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="animate-spin h-8 w-8 border-2 border-[#27272a] border-t-blue-600 rounded-full mx-auto mb-4"></div>
+              <p className="text-[#a1a1aa]">Loading map...</p>
+              <p className="text-[#71717a] text-sm mt-2">Initializing Mapbox GL JS</p>
+            </>
+          )}
         </div>
       </div>
     );
