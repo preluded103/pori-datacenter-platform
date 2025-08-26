@@ -269,7 +269,7 @@ export async function getCurrentUserOrgId(): Promise<string> {
     throw new DatabaseError('User organization not found');
   }
   
-  return userData.organization_id;
+  return (userData as any).organization_id;
 }
 
 /**

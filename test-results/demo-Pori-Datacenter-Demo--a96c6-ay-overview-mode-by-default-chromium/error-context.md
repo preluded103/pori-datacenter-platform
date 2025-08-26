@@ -1,0 +1,189 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - heading "Pre-DD Intelligence Platform" [level=1] [ref=e6]
+          - generic [ref=e7]:
+            - paragraph [ref=e8]: Phase 0 Screening Results
+            - generic [ref=e11]: Database Connected
+        - generic [ref=e12]:
+          - button "Export Report" [ref=e13] [cursor=pointer]:
+            - img [ref=e14] [cursor=pointer]
+            - text: Export Report
+          - button "Map" [ref=e17] [cursor=pointer]:
+            - img [ref=e18] [cursor=pointer]
+            - text: Map
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - heading "Pori Datacenter Site Assessment" [level=2] [ref=e24]
+            - paragraph [ref=e25]: "Client: European DC Development Ltd. • Analysis Date: 2025-01-25"
+          - generic [ref=e26]:
+            - generic [ref=e27]: 1 Site
+            - generic [ref=e28]: Analyzed in 3 days
+        - generic [ref=e29]:
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - paragraph [ref=e33]: Status
+              - paragraph [ref=e34]: AVOID
+            - img [ref=e35]
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - paragraph [ref=e41]: Critical Issues
+              - paragraph [ref=e42]: "2"
+            - img [ref=e43]
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - paragraph [ref=e48]: Overall Score
+              - paragraph [ref=e49]: "3.5"
+            - img [ref=e50]
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - paragraph [ref=e56]: Investment Required
+              - paragraph [ref=e57]: €8-15M
+            - img [ref=e58]
+      - generic [ref=e61]:
+        - heading "Site Overview" [level=3] [ref=e62]
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: Overall Score
+              - generic [ref=e67]: "3.5"
+            - generic [ref=e68]:
+              - generic [ref=e69]: Infrastructure
+              - generic [ref=e70]: "8.2"
+            - generic [ref=e71]:
+              - generic [ref=e72]: Environmental
+              - generic [ref=e73]: "7.1"
+            - generic [ref=e74]:
+              - generic [ref=e75]: Regulatory
+              - generic [ref=e76]: "8.5"
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]: Investment Required
+              - generic [ref=e80]: €8-15M
+            - generic [ref=e81]:
+              - generic [ref=e82]: Timeline
+              - generic [ref=e83]: 36-48mo
+            - generic [ref=e84]:
+              - generic [ref=e85]: Recommendation
+              - generic [ref=e86]: AVOID
+      - generic [ref=e87]:
+        - heading "Detailed Site Analysis" [level=3] [ref=e88]
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - heading "Pori Konepajanranta" [level=4] [ref=e92]
+              - paragraph [ref=e93]: Pori, Finland
+              - generic [ref=e94]:
+                - generic [ref=e95]: 15 hectares
+                - generic [ref=e96]: •
+                - generic [ref=e97]: 70MW requirement
+                - generic [ref=e98]: •
+                - generic [ref=e99]: 61.4957°N, 21.8110°E
+            - generic [ref=e100]:
+              - generic [ref=e101]: "3.5"
+              - generic [ref=e102]: AVOID
+          - generic [ref=e103]:
+            - generic [ref=e104]:
+              - img [ref=e105]
+              - generic [ref=e107]: "8.2"
+              - generic [ref=e108]: Infrastructure
+            - generic [ref=e109]:
+              - img [ref=e110]
+              - generic [ref=e113]: "7.1"
+              - generic [ref=e114]: Environmental
+            - generic [ref=e115]:
+              - img [ref=e116]
+              - generic [ref=e119]: "8.5"
+              - generic [ref=e120]: Regulatory
+            - generic [ref=e121]:
+              - img [ref=e122]
+              - generic [ref=e126]: "7.4"
+              - generic [ref=e127]: Technical
+            - generic [ref=e128]:
+              - img [ref=e129]
+              - generic [ref=e132]: "6.8"
+              - generic [ref=e133]: Timeline
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - generic [ref=e136]: €8-15M
+              - generic [ref=e137]: Infrastructure Investment
+            - generic [ref=e138]:
+              - generic [ref=e139]: 36-48mo
+              - generic [ref=e140]: Development Timeline
+            - generic [ref=e141]:
+              - generic [ref=e142]: MEDIUM
+              - generic [ref=e143]: Project Complexity
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - heading "Critical Issues" [level=5] [ref=e146]:
+                - img [ref=e147]
+                - text: Critical Issues
+              - list [ref=e149]:
+                - listitem [ref=e150]:
+                  - generic [ref=e151]: •
+                  - text: 70MW = 82 MVA demand exceeds single 110kV connection limit of 65 MVA. Dual connections or transmission upgrade required.
+                - listitem [ref=e152]:
+                  - generic [ref=e153]: •
+                  - text: Site within Kokemäenjoki estuary International Important Bird Area - largest Nordic delta ecosystem.
+            - generic [ref=e154]:
+              - heading "Site Strengths" [level=5] [ref=e155]:
+                - img [ref=e156]
+                - text: Site Strengths
+              - list [ref=e159]:
+                - listitem [ref=e160]:
+                  - generic [ref=e161]: •
+                  - text: Industrial zoning pre-approved for datacenters
+                - listitem [ref=e162]:
+                  - generic [ref=e163]: •
+                  - text: Excellent transport connectivity via Highway 11
+                - listitem [ref=e164]:
+                  - generic [ref=e165]: •
+                  - text: Municipal district heating integration opportunity
+      - generic [ref=e166]:
+        - heading "Platform Capabilities Demonstrated" [level=3] [ref=e167]
+        - generic [ref=e168]:
+          - generic [ref=e169]:
+            - heading "Phase 0 Screening Features" [level=4] [ref=e170]
+            - list [ref=e171]:
+              - listitem [ref=e172]: • Infrastructure proximity analysis (not capacity modeling)
+              - listitem [ref=e173]: • Regulatory requirement flagging (not detailed process analysis)
+              - listitem [ref=e174]: • Order-of-magnitude cost estimates (±20-30% accuracy)
+              - listitem [ref=e175]: • Go/No-Go recommendations with confidence levels
+              - listitem [ref=e176]: • Professional disclaimers for preliminary assessment
+              - listitem [ref=e177]: • Multi-site comparison and ranking
+          - generic [ref=e178]:
+            - heading "Business Impact" [level=4] [ref=e179]
+            - list [ref=e180]:
+              - listitem [ref=e181]:
+                - text: •
+                - strong [ref=e182]: "Time:"
+                - text: 3-5 days per site (not weeks)
+              - listitem [ref=e183]:
+                - text: •
+                - strong [ref=e184]: "Cost:"
+                - text: €15-25k per site screening
+              - listitem [ref=e185]:
+                - text: •
+                - strong [ref=e186]: "Value:"
+                - text: Save €2-5M by avoiding unsuitable sites
+              - listitem [ref=e187]:
+                - text: •
+                - strong [ref=e188]: "Scale:"
+                - text: Screen 20 sites → Identify 3-5 for full DD
+              - listitem [ref=e189]:
+                - text: •
+                - strong [ref=e190]: "Quality:"
+                - text: Based on proven Pori analysis methodology
+              - listitem [ref=e191]:
+                - text: •
+                - strong [ref=e192]: "Coverage:"
+                - text: Modular expansion across EU/Nordic countries
+  - alert [ref=e193]
+```

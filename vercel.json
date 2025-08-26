@@ -2,7 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "regions": ["fra1", "iad1"],
+  "regions": ["iad1"],
   "functions": {
     "app/**/*.tsx": {
       "maxDuration": 30

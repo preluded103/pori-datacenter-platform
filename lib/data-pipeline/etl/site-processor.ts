@@ -274,19 +274,19 @@ export class SiteProcessor {
           area_hectares: data.area_hectares,
           power_requirement_mw: data.power_requirement_mw,
           overall_score: data.overall_score,
-          recommendation: data.recommendation,
-          assessment_status: 'completed',
+          recommendation: data.recommendation as 'proceed' | 'caution' | 'avoid',
+          assessment_status: 'completed' as const,
           assessment_date: new Date().toISOString()
-        }, { onConflict: 'name' })
+        } as any, { onConflict: 'name' })
         .select()
         .single();
 
-      if (siteError) {
+      if (siteError || !siteData) {
         console.error('Error storing site data:', siteError);
         return;
       }
 
-      const siteId = siteData.id;
+      const siteId = (siteData as any).id;
 
       // 2. Insert risk assessment
       const { error: riskError } = await this.supabase
@@ -295,7 +295,7 @@ export class SiteProcessor {
           site_id: siteId,
           ...data.risk_assessment,
           assessed_at: new Date().toISOString()
-        }, { onConflict: 'site_id' });
+        } as any, { onConflict: 'site_id' });
 
       if (riskError) {
         console.error('Error storing risk assessment:', riskError);
@@ -312,7 +312,7 @@ export class SiteProcessor {
             confidence_level: source.confidence_level,
             data_date: source.data_date,
             created_at: new Date().toISOString()
-          });
+          } as any);
 
         if (sourceError) {
           console.error('Error storing data source:', sourceError);

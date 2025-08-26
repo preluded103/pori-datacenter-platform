@@ -12,3 +12,56 @@ body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-start-rgb));
 }
+
+/* Custom opacity slider styling */
+.opacity-slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #1a1a1f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.opacity-slider::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 2px solid #1a1a1f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Mapbox overrides for dark theme */
+.mapboxgl-popup {
+  color: #fafafa;
+}
+
+.mapboxgl-popup-content {
+  background: #131316;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: #131316;
+}
+
+.mapboxgl-ctrl-group {
+  background: #131316;
+  border-radius: 6px;
+  border: 1px solid #27272a;
+}
+
+.mapboxgl-ctrl button {
+  background: #131316;
+  color: #a1a1aa;
+}
+
+.mapboxgl-ctrl button:hover {
+  background: #27272a;
+  color: #fafafa;
+}

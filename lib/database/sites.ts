@@ -108,13 +108,13 @@ export async function createSite(projectId: string, data: CreateSiteRequest): Pr
       location: coordinatesToPoint(data.coordinates),
       address: data.address?.trim() || null,
       municipality: data.municipality?.trim() || null,
-      country_code: project.country_code,
+      country_code: (project as any).country_code,
       area_hectares: data.area_hectares || null,
       power_requirement_mw: data.power_requirement_mw || null,
       assessment_status: 'pending' as const
     };
 
-    const { data: site, error } = await supabase
+    const { data: site, error } = await (supabase as any)
       .from('sites')
       .insert(siteData)
       .select('*')
@@ -152,7 +152,7 @@ export async function updateSite(id: string, data: UpdateSiteRequest): Promise<S
     if (data.area_hectares !== undefined) updateData.area_hectares = data.area_hectares;
     if (data.power_requirement_mw !== undefined) updateData.power_requirement_mw = data.power_requirement_mw;
 
-    const { data: site, error } = await supabase
+    const { data: site, error } = await (supabase as any)
       .from('sites')
       .update(updateData)
       .eq('id', id)
@@ -230,7 +230,7 @@ export async function updateSiteAssessmentStatus(
       if (recommendation !== undefined) updateData.recommendation = recommendation;
     }
 
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('sites')
       .update(updateData)
       .eq('id', id);
@@ -349,13 +349,13 @@ export async function bulkCreateSites(
       location: coordinatesToPoint(site.coordinates),
       address: site.address?.trim() || null,
       municipality: site.municipality?.trim() || null,
-      country_code: project.country_code,
+      country_code: (project as any).country_code,
       area_hectares: site.area_hectares || null,
       power_requirement_mw: site.power_requirement_mw || null,
       assessment_status: 'pending' as const
     }));
 
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('sites')
       .insert(sitesData)
       .select('*');

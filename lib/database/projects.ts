@@ -131,12 +131,12 @@ export async function getProject(id: string): Promise<Project | null> {
 
     // Transform with computed fields
     const project: Project = {
-      ...data,
-      sites_count: data.sites?.length || 0,
-      sites_assessed: data.sites?.filter(s => s.assessment_status === 'completed').length || 0,
-      sites_recommended: data.sites?.filter(s => s.overall_score && s.overall_score >= 7).length || 0,
-      total_capacity_mw: data.sites?.reduce((sum, s) => sum + (s.power_requirement_mw || 0), 0) || 0,
-      total_investment_eur: data.sites?.reduce((sum, s) => sum + 5000000, 0) || 0
+      ...(data as any),
+      sites_count: (data as any).sites?.length || 0,
+      sites_assessed: (data as any).sites?.filter((s: any) => s.assessment_status === 'completed').length || 0,
+      sites_recommended: (data as any).sites?.filter((s: any) => s.overall_score && s.overall_score >= 7).length || 0,
+      total_capacity_mw: (data as any).sites?.reduce((sum: number, s: any) => sum + (s.power_requirement_mw || 0), 0) || 0,
+      total_investment_eur: (data as any).sites?.reduce((sum: number, s: any) => sum + 5000000, 0) || 0
     };
 
     return project;
@@ -169,7 +169,7 @@ export async function createProject(data: CreateProjectRequest): Promise<Project
 
     const { data: project, error } = await supabase
       .from('projects')
-      .insert(projectData)
+      .insert(projectData as any)
       .select(`
         *,
         organization:organizations(name, slug),
@@ -183,7 +183,7 @@ export async function createProject(data: CreateProjectRequest): Promise<Project
 
     // Return with computed fields
     return {
-      ...project,
+      ...(project as any),
       sites_count: 0,
       sites_assessed: 0,
       sites_recommended: 0,
@@ -214,7 +214,7 @@ export async function updateProject(id: string, data: UpdateProjectRequest): Pro
     if (data.description !== undefined) updateData.description = data.description?.trim() || null;
     if (data.status !== undefined) updateData.status = data.status;
 
-    const { data: project, error } = await supabase
+    const { data: project, error } = await (supabase as any)
       .from('projects')
       .update(updateData)
       .eq('id', id)
@@ -315,15 +315,15 @@ export async function getProjectStats(): Promise<{
       handleDatabaseError(projectsError, 'getProjectStats');
     }
 
-    const allSites = projects?.flatMap(p => p.sites || []) || [];
+    const allSites = (projects as any)?.flatMap((p: any) => p.sites || []) || [];
     
     return {
-      total_projects: projects?.length || 0,
-      active_projects: projects?.filter(p => p.status === 'active').length || 0,
+      total_projects: (projects as any)?.length || 0,
+      active_projects: (projects as any)?.filter((p: any) => p.status === 'active').length || 0,
       total_sites: allSites.length,
-      sites_assessed: allSites.filter(s => s.assessment_status === 'completed').length,
-      total_capacity_mw: allSites.reduce((sum, s) => sum + (s.power_requirement_mw || 0), 0),
-      recommended_sites: allSites.filter(s => s.overall_score && s.overall_score >= 7).length
+      sites_assessed: allSites.filter((s: any) => s.assessment_status === 'completed').length,
+      total_capacity_mw: allSites.reduce((sum: number, s: any) => sum + (s.power_requirement_mw || 0), 0),
+      recommended_sites: allSites.filter((s: any) => s.overall_score && s.overall_score >= 7).length
     };
   } catch (error) {
     if (error instanceof DatabaseError) throw error;

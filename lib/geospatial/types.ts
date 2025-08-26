@@ -141,6 +141,127 @@ export interface RoadData {
   geometry: GeoJSON.LineString;
 }
 
+export interface RailwayData {
+  id: string;
+  railway_type: string;
+  operator: string;
+  gauge_mm: number;
+  electrified: boolean;
+  distance_m: number;
+  geometry: GeoJSON.LineString;
+}
+
+export interface PortData {
+  id: string;
+  name: string;
+  port_type: string;
+  operator: string;
+  capacity_tonnes: number;
+  distance_m: number;
+  geometry: GeoJSON.Point;
+}
+
+export interface AirportData {
+  id: string;
+  name: string;
+  airport_type: string;
+  iata_code?: string;
+  icao_code?: string;
+  runway_count: number;
+  distance_m: number;
+  geometry: GeoJSON.Point;
+}
+
+export interface WaterBodyData {
+  id: string;
+  name: string;
+  water_type: string;
+  area_m2: number;
+  distance_m: number;
+  geometry: GeoJSON.Polygon;
+}
+
+export interface WetlandData {
+  id: string;
+  name: string;
+  wetland_type: string;
+  conservation_status: string;
+  area_m2: number;
+  distance_m: number;
+  geometry: GeoJSON.Polygon;
+}
+
+export interface BiodiversityZoneData {
+  id: string;
+  name: string;
+  zone_type: string;
+  protection_level: string;
+  species_count: number;
+  distance_m: number;
+  geometry: GeoJSON.Polygon;
+}
+
+export interface AirQualityData {
+  station_id: string;
+  pm25: number;
+  pm10: number;
+  no2: number;
+  so2: number;
+  o3: number;
+  measurement_date: string;
+}
+
+export interface NoiseLevelData {
+  station_id: string;
+  db_level: number;
+  measurement_type: string;
+  measurement_date: string;
+}
+
+export interface PropertyBoundaryData {
+  id: string;
+  property_id: string;
+  owner: string;
+  area_m2: number;
+  land_use: string;
+  geometry: GeoJSON.Polygon;
+}
+
+export interface BuildingPermitData {
+  id: string;
+  permit_type: string;
+  status: string;
+  application_date: string;
+  approval_date?: string;
+  building_area_m2: number;
+  geometry: GeoJSON.Point;
+}
+
+export interface FloodRiskData {
+  risk_level: 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME';
+  flood_zone: string;
+  return_period_years: number;
+  max_depth_m: number;
+  last_flood_date?: string;
+}
+
+export interface TrafficData {
+  congestion_level: 'LOW' | 'MEDIUM' | 'HIGH';
+  average_speed_kmh: number;
+  incident_count: number;
+  last_updated: string;
+}
+
+export interface ConstructionActivityData {
+  id: string;
+  project_type: string;
+  status: 'PLANNED' | 'ACTIVE' | 'COMPLETED';
+  start_date: string;
+  end_date?: string;
+  impact_radius_m: number;
+  geometry: GeoJSON.Point;
+}
+
 export interface ProtectedAreaData {
   id: string;
   name: string;
