@@ -13,7 +13,11 @@ const TSO_DATABASE: Record<string, TSO> = {
     country: 'Finland',
     countryCode: 'FI',
     eicCode: '10YFI-1--------U',
-    apiEndpoint: 'https://api.fingrid.fi/v1',
+    apiEndpoints: {
+      capacity: 'https://api.fingrid.fi/v1',
+      generation: 'https://api.fingrid.fi/v1',
+      transmission: 'https://api.fingrid.fi/v1'
+    },
     contactInfo: {
       website: 'https://www.fingrid.fi/en/',
       email: 'info@fingrid.fi',
@@ -26,7 +30,11 @@ const TSO_DATABASE: Record<string, TSO> = {
     country: 'Sweden', 
     countryCode: 'SE',
     eicCode: '10YSE-1--------K',
-    apiEndpoint: 'https://www.svk.se/en/stakeholder-portal/electricity-market/',
+    apiEndpoints: {
+      capacity: 'https://www.svk.se/en/stakeholder-portal/electricity-market/',
+      generation: 'https://www.svk.se/en/stakeholder-portal/electricity-market/',
+      transmission: 'https://www.svk.se/en/stakeholder-portal/electricity-market/'
+    },
     contactInfo: {
       website: 'https://www.svk.se/en/',
       email: 'info@svk.se',
@@ -39,7 +47,11 @@ const TSO_DATABASE: Record<string, TSO> = {
     country: 'Norway',
     countryCode: 'NO', 
     eicCode: '10YNO-0--------C',
-    apiEndpoint: 'https://www.statnett.no/en/',
+    apiEndpoints: {
+      capacity: 'https://www.statnett.no/en/',
+      generation: 'https://www.statnett.no/en/',
+      transmission: 'https://www.statnett.no/en/'
+    },
     contactInfo: {
       website: 'https://www.statnett.no/en/',
       email: 'post@statnett.no',
@@ -52,7 +64,11 @@ const TSO_DATABASE: Record<string, TSO> = {
     country: 'Denmark',
     countryCode: 'DK',
     eicCode: '10YDK-1--------W', 
-    apiEndpoint: 'https://energinet.dk/en/',
+    apiEndpoints: {
+      capacity: 'https://energinet.dk/en/',
+      generation: 'https://energinet.dk/en/',
+      transmission: 'https://energinet.dk/en/'
+    },
     contactInfo: {
       website: 'https://energinet.dk/en/',
       email: 'info@energinet.dk',
@@ -76,7 +92,11 @@ const TSO_DATABASE: Record<string, TSO> = {
     country: 'Netherlands',
     countryCode: 'NL',
     eicCode: '10YNL----------L',
-    apiEndpoint: 'https://www.tennet.eu/electricity-market/',
+    apiEndpoints: {
+      capacity: 'https://www.tennet.eu/electricity-market/',
+      generation: 'https://www.tennet.eu/electricity-market/',
+      transmission: 'https://www.tennet.eu/electricity-market/'
+    },
     contactInfo: {
       website: 'https://www.tennet.eu/',
       email: 'info@tennet.eu',
@@ -333,7 +353,7 @@ function buildApiSourceRecommendations(
     priority: 'high',
     dataTypes: ['capacity_data', 'transmission_lines', 'substations', 'development_plans'],
     accessInfo: {
-      requiresApiKey: primaryTSO.apiEndpoint ? true : false,
+      requiresApiKey: primaryTSO.apiEndpoints ? true : false,
       publicEndpoints: getPublicEndpoints(primaryTSO),
       contactForAccess: primaryTSO.contactInfo?.email
     }
@@ -346,7 +366,7 @@ function buildApiSourceRecommendations(
       priority: 'medium',
       dataTypes: ['cross_border_flows', 'interconnection_capacity', 'regional_constraints'],
       accessInfo: {
-        requiresApiKey: tso.apiEndpoint ? true : false,
+        requiresApiKey: tso.apiEndpoints ? true : false,
         publicEndpoints: getPublicEndpoints(tso),
         contactForAccess: tso.contactInfo?.email
       }
@@ -360,7 +380,11 @@ function buildApiSourceRecommendations(
       country: 'Pan-European',
       countryCode: 'EU',
       eicCode: 'ENTSOE',
-      apiEndpoint: 'https://web-api.tp.entsoe.eu/api',
+      apiEndpoints: {
+        capacity: 'https://web-api.tp.entsoe.eu/api',
+        generation: 'https://web-api.tp.entsoe.eu/api',
+        transmission: 'https://web-api.tp.entsoe.eu/api'
+      },
       contactInfo: {
         website: 'https://transparency.entsoe.eu/',
         email: 'transparency@entsoe.eu'

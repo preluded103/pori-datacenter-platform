@@ -75,11 +75,11 @@ export const POST = gridIntelligenceApiSecurity(async (request: NextRequest): Pr
     // Validate input using comprehensive validation
     const validation = validateRequest(body);
     if (!validation.success) {
-      console.log('❌ Validation failed:', validation.errors);
+      console.log('❌ Validation failed:', 'errors' in validation ? validation.errors : 'Unknown error');
       return NextResponse.json(
         {
           error: 'Validation failed',
-          details: validation.errors
+          details: 'errors' in validation ? validation.errors : []
         },
         { status: 400 }
       );
@@ -89,7 +89,7 @@ export const POST = gridIntelligenceApiSecurity(async (request: NextRequest): Pr
     const [longitude, latitude] = coordinates;
 
     // Additional security checks
-    if (!GridAnalysisValidator.validateCoordinate(coordinates)) {
+    if (!GridAnalysisValidator.validateCoordinate(coordinates as [number, number])) {
       return NextResponse.json(
         {
           error: 'Invalid coordinates',
@@ -100,7 +100,7 @@ export const POST = gridIntelligenceApiSecurity(async (request: NextRequest): Pr
     }
 
     // Check if coordinates are within European bounds
-    if (!GridAnalysisValidator.isWithinEurope(coordinates)) {
+    if (!GridAnalysisValidator.isWithinEurope(coordinates as [number, number])) {
       return NextResponse.json(
         {
           error: 'Location outside service area',
@@ -144,7 +144,7 @@ export const POST = gridIntelligenceApiSecurity(async (request: NextRequest): Pr
         );
       }
       
-      polygonBounds = calculatePolygonBounds({ geometry: polygon } as PolygonFeature);
+      polygonBounds = calculatePolygonBounds({ id: 'temp', type: 'Feature', geometry: polygon, properties: {} } as PolygonFeature);
     }
 
     // Build location information

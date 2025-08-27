@@ -443,37 +443,40 @@ function validateCSRFTokens(csrfToken: string, sessionToken: string): boolean {
 }
 
 // Export configured middleware for common use cases
-export const gridIntelligenceApiSecurity = withSecurity({
-  rateLimit: {
-    windowMs: 10 * 60 * 1000, // 10 minutes
-    maxRequests: 50, // Conservative for analysis APIs
-    message: 'Too many grid analysis requests. Please try again later.'
-  },
-  maxRequestSize: 5 * 1024 * 1024, // 5MB for polygon data
-  allowedOrigins: [
-    'http://localhost:3000',
-    'https://localhost:3000',
-    'https://your-domain.com'
-  ]
-});
+export const gridIntelligenceApiSecurity = (handler: (request: NextRequest) => Promise<NextResponse>) => 
+  withSecurity({
+    rateLimit: {
+      windowMs: 10 * 60 * 1000, // 10 minutes
+      maxRequests: 50, // Conservative for analysis APIs
+      message: 'Too many grid analysis requests. Please try again later.'
+    },
+    maxRequestSize: 5 * 1024 * 1024, // 5MB for polygon data
+    allowedOrigins: [
+      'http://localhost:3000',
+      'https://localhost:3000',
+      'https://your-domain.com'
+    ]
+  }, handler);
 
-export const publicApiSecurity = withSecurity({
-  rateLimit: {
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    maxRequests: 200,
-    message: 'Rate limit exceeded. Please try again later.'
-  },
-  allowedOrigins: ['*'], // More permissive for public APIs
-  maxRequestSize: 1 * 1024 * 1024 // 1MB for public endpoints
-});
+export const publicApiSecurity = (handler: (request: NextRequest) => Promise<NextResponse>) => 
+  withSecurity({
+    rateLimit: {
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      maxRequests: 200,
+      message: 'Rate limit exceeded. Please try again later.'
+    },
+    allowedOrigins: ['*'], // More permissive for public APIs
+    maxRequestSize: 1 * 1024 * 1024 // 1MB for public endpoints
+  }, handler);
 
-export const authenticatedApiSecurity = withSecurity({
-  requireAuth: true,
-  rateLimit: {
-    windowMs: 5 * 60 * 1000, // 5 minutes  
-    maxRequests: 100,
-    message: 'Rate limit exceeded for authenticated requests.'
-  },
-  enableCSRF: true,
-  maxRequestSize: 20 * 1024 * 1024 // 20MB for authenticated users
-});
+export const authenticatedApiSecurity = (handler: (request: NextRequest) => Promise<NextResponse>) => 
+  withSecurity({
+    requireAuth: true,
+    rateLimit: {
+      windowMs: 5 * 60 * 1000, // 5 minutes  
+      maxRequests: 100,
+      message: 'Rate limit exceeded for authenticated requests.'
+    },
+    enableCSRF: true,
+    maxRequestSize: 20 * 1024 * 1024 // 20MB for authenticated users
+  }, handler);

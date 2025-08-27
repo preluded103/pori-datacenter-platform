@@ -169,7 +169,7 @@ export default function GridRecommendations({
     
     const normalized = Object.fromEntries(
       Object.entries(weights).map(([key, value]) => [key, value / total])
-    ) as RecommendationWeights;
+    ) as unknown as RecommendationWeights;
     
     setWeights(normalized);
   };

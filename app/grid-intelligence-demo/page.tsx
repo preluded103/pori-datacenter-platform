@@ -124,7 +124,7 @@ export default function GridIntelligenceDemoPage() {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: [demoPolygon]
+        features: [{...demoPolygon, properties: demoPolygon.properties || {}}]
       }
     });
     

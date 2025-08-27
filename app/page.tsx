@@ -3,6 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, FolderOpen, Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 interface Project {
   id: string;
@@ -63,24 +67,24 @@ export default function Home() {
           
           {/* Left Sidebar - New Project */}
           <div className="lg:col-span-1">
-            <div className="bg-[#131316] border border-[#27272a] rounded-lg p-6">
-              <div className="flex items-center mb-4">
-                <Plus className="w-5 h-5 mr-2 text-blue-400" />
-                <h2 className="text-lg font-semibold">New</h2>
-              </div>
-              
-              <div className="space-y-3">
-                <Link 
-                  href="/projects/new"
-                  className="block w-full p-3 text-left bg-[#1a1a1f] hover:bg-[#27272a] border border-[#27272a] rounded-md transition-colors"
-                >
-                  Project
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Plus className="w-5 h-5 mr-2 text-blue-400" />
+                  New
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Link href="/projects/new">
+                  <Button variant="outline" className="w-full">
+                    Project
+                  </Button>
                 </Link>
-                <div className="text-sm text-[#71717a]">
+                <div className="text-sm text-muted-foreground">
                   Start a new datacenter feasibility analysis
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Right Main Area - Existing Projects */}
@@ -96,12 +100,12 @@ export default function Home() {
                 
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#71717a]" />
-                  <input
+                  <Input
                     type="text"
                     placeholder="Search projects..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 bg-[#0a0a0b] border border-[#27272a] rounded-md text-[#fafafa] placeholder-[#71717a] focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    className="pl-10 bg-[#0a0a0b] border-[#27272a] text-[#fafafa] placeholder-[#71717a] focus:border-blue-600"
                   />
                 </div>
               </div>
@@ -125,13 +129,20 @@ export default function Home() {
                           </div>
                         </div>
                         <div className="ml-4">
-                          <span className={`px-2 py-1 text-xs rounded-md ${
-                            project.status === 'Active' ? 'bg-green-600 text-white' :
-                            project.status === 'Draft' ? 'bg-yellow-600 text-white' :
-                            'bg-[#27272a] text-[#a1a1aa]'
-                          }`}>
+                          <Badge 
+                            variant={
+                              project.status === 'Active' ? 'default' :
+                              project.status === 'Draft' ? 'secondary' :
+                              'outline'
+                            }
+                            className={
+                              project.status === 'Active' ? 'bg-green-600 hover:bg-green-700' :
+                              project.status === 'Draft' ? 'bg-yellow-600 hover:bg-yellow-700' :
+                              ''
+                            }
+                          >
                             {project.status}
-                          </span>
+                          </Badge>
                         </div>
                       </div>
                     </Link>
