@@ -1,0 +1,57 @@
+{
+  "title": "European Grid Queue Intelligence Dashboard",
+  "description": "Real-time analysis of European TSO grid connection queues and capacity constraints",
+  "data_sources": [
+    {
+      "name": "Grid Capacity Data",
+      "file": "grid_capacity_arcgis.csv",
+      "type": "Table",
+      "key_fields": [
+        "capacity_mw",
+        "project_name",
+        "location"
+      ]
+    },
+    {
+      "name": "Connection Requirements",
+      "file": "grid_connections_arcgis.csv",
+      "type": "Table",
+      "key_fields": [
+        "connection_type",
+        "requirement_count"
+      ]
+    },
+    {
+      "name": "Investment Timeline",
+      "file": "grid_investments_arcgis.csv",
+      "type": "Table",
+      "key_fields": [
+        "timeline",
+        "project_count",
+        "total_investment"
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "type": "indicator",
+      "title": "Total Grid Capacity Analyzed",
+      "field": "capacity_mw",
+      "aggregation": "sum"
+    },
+    {
+      "type": "bar_chart",
+      "title": "Connection Types Distribution",
+      "data": "grid_connections_arcgis.csv",
+      "x_field": "connection_type",
+      "y_field": "requirement_count"
+    },
+    {
+      "type": "timeline",
+      "title": "Investment Timeline",
+      "data": "grid_investments_arcgis.csv",
+      "date_field": "timeline",
+      "value_field": "total_investment"
+    }
+  ]
+}

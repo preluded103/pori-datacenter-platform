@@ -1,8 +1,18 @@
-# Pori Datacenter Site Due Diligence Analysis
-## Konepajanranta, Pori, Finland
+# Pori Datacenter Feasibility Platform
+## European Grid Queue Intelligence System
 
-### Project Overview
-Comprehensive due diligence analysis for a proposed AI datacenter development at Konepajanranta in Pori, Finland. This analysis will provide detailed assessment of site constraints, zoning compliance, infrastructure capacity, and development potential through advanced geospatial analysis and planning data integration.
+### Project Overview  
+Comprehensive datacenter site selection and feasibility analysis platform for European markets, with focus on Nordic countries (Finland, Sweden, Norway, Denmark) and key markets (Germany, Netherlands). Now pivoting to ArcGIS Online ecosystem with automated grid queue intelligence system.
+
+### Current Sprint: Grid Queue Intelligence System
+**Objective**: Build comprehensive European grid connection queue intelligence for datacenter site selection
+
+**Implementation in Progress:**
+1. **Automated TSO Document Harvesting**: Web scraping of transmission system operator planning documents
+2. **Fingrid API Integration**: Real-time Finnish grid data and capacity analysis
+3. **ENTSO-E Pipeline**: Pan-European transmission data integration
+4. **NLP Queue Extraction**: Extract connection queue information from regulatory filings
+5. **ArcGIS Online Migration**: Move from Mapbox to ArcGIS Experience Builder platform
 
 ### Site Details (Extracted from PDF + User Correction)
 - **Location**: Konepajanranta, Pori, Finland
@@ -489,6 +499,8 @@ Space for professional stamps/seals:
 **European Demographic Data Planning Strategy**: /docs/european-demographic-planner-plan-25012025.md - Comprehensive data acquisition strategy for expanding datacenter due diligence platform across 12 European countries, leveraging successful Pori methodology with country-specific API integration, fallback strategies, and GDPR compliance framework
 
 **Vercel Deployment Specialist Plan**: /docs/vercel-deployment-plan-comprehensive.md - Enterprise-grade deployment plan for Next.js 14 datacenter intelligence platform with optimized Mapbox integration, European region deployment, comprehensive performance monitoring, security hardening, and scalable CI/CD pipeline configuration
+
+**Vercel Frontend Testing & Deployment Plan**: /docs/vercel-frontend-plan-testing-deployment.md - Comprehensive testing and deployment strategy focused on quality assurance, Playwright E2E testing, WCAG 2.1 accessibility compliance, Core Web Vitals optimization, shadcn/ui component validation, security hardening, and enterprise-grade CI/CD pipeline integration with rollback procedures
 
 ## DATA SOURCE DISCOVERY DOCUMENTATION
 *Critical for replicability - documenting what works, what doesn't, and alternative approaches*
