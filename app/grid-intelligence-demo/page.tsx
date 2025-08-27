@@ -355,7 +355,7 @@ export default function GridIntelligenceDemoPage() {
                 </div>
                 <div>
                   <h3 className="font-medium text-[#fafafa] text-sm">Site Selection</h3>
-                  <p className="text-xs text-[#71717a]">We'll draw a polygon around a potential datacenter site in Pori, Finland</p>
+                  <p className="text-xs text-[#71717a]">We&apos;ll draw a polygon around a potential datacenter site in Pori, Finland</p>
                 </div>
               </div>
               

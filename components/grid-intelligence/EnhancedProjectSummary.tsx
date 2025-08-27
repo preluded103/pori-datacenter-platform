@@ -205,7 +205,7 @@ export default function EnhancedProjectSummary({
                   </div>
                 </div>
                 <div className="mt-2 text-xs text-blue-300">
-                  Click "Grid" tab for detailed analysis
+                  Click &quot;Grid&quot; tab for detailed analysis
                 </div>
               </div>
             )}
